@@ -1,0 +1,658 @@
+/* ========= Page Loader =========== */
+#pageloader {
+    background:#323232;
+    height: 100%;
+    position: fixed;
+    width: 100%;	
+    z-index: 999999;
+	color:#FFF;
+	font-size:16px;
+	font-weight:400;
+	text-align:center;
+	font-style:italic;
+}
+.loader-item {
+    left: 50%;
+    margin: -36px 0 0 -36px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: auto;
+	width:72px;
+	height:72px;
+}
+.loader-item img{
+	margin-bottom:10px;
+}
+/* ========= End =========== */
+
+/* === Expanding Search Input === */
+.box-search {
+    position: absolute;
+	top:-30px;
+}
+.search-input {
+    width: 200px;
+    max-width:0;
+    padding: 5px;
+    transition: all .5s ease;
+    position:absolute;
+    right:8px;
+	top:23px;
+	font-family: "Ubuntu",sans-serif;
+    box-sizing:border-box;
+    opacity:0;
+	font-size:13px;
+	line-height:20px;
+	border-radius:0;
+	border:2px solid #d1d1d1;
+	background:#FFF;
+}
+.search-input.expanded {
+    max-width:200px;
+    opacity:1;
+	position:absolute
+}
+/* === Expanding Search Input End === */
+
+/* === Social Icons === */
+.social-icons{
+	padding:0;
+}
+.head.social-icons ul{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+.head.social-icons ul li{
+	display:inline-block;
+	line-height:80px;
+	padding:0 5px;
+	font-size:16px;
+}
+.head.social-icons ul li:first-child, .head.social-icons ul li:last-child{
+	border-style:solid;
+	border-width:0 0 0 1px;
+	border-color:#d1d1d1;
+}
+.head.social-icons ul li:last-child{
+	border-right:1px solid #FFF;
+}
+.head.social-icons ul li:last-child{
+	padding:0 20px;
+	margin-left:10px;
+}
+.head.social-icons ul li:first-child{
+	padding:0 5px 0 20px;
+	margin-left:10px;
+}
+.head.social-icons ul li a{
+	color:#999;
+}
+.head.social-icons ul li a:hover{
+	color:#fe4444;
+}
+
+.social-icons ul{
+	list-style-type:none;
+	margin:0;
+	padding:0	
+}
+.social-icons ul li{
+	padding:0 8px 0 0;
+	line-height:52px;
+	display:inline-block;
+}
+.social-icons ul li a{
+	color:#666;
+	font-size:14px;
+}
+.social-icons ul li a:hover{
+	color:#fe4444;
+}
+.sidebar-text .social-icons ul li, .about-author .social-icons ul li{
+	line-height:inherit;
+	padding-top:15px;
+}
+/* === Social Icons End === */
+
+/* ========= Blog Post Hover =========== */
+.item-thumbs {
+	position: relative;
+	overflow: hidden;
+}
+.item-thumbs img {
+	display: block;
+	position: relative;
+	width: 100%;
+	z-index:1
+
+	-webkit-transition: -webkit-transform 0.4s ease;
+	transition: transform 0.4s ease-out;
+}
+
+.item-thumbs:hover img {
+	-webkit-transform: scale(1.09);
+	transform: scale(1.09);
+}
+.item-thumbs:hover .overlay-img-thumb img {
+    transform: none;
+}
+
+.item-thumbs .hover-wrap {
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	z-index:12;
+	
+	opacity: 0;
+	filter: alpha(opacity=0);
+	
+	-webkit-transition: all 450ms ease-out 0s;	
+	   -moz-transition: all 450ms ease-out 0s;
+		 -o-transition: all 450ms ease-out 0s;
+		    transition: all 450ms ease-out 0s;
+		  
+	-webkit-transform: rotateY(180deg) scale(0.5,0.5);
+	   -moz-transform: rotateY(180deg) scale(0.5,0.5);
+		-ms-transform: rotateY(180deg) scale(0.5,0.5);
+		 -o-transform: rotateY(180deg) scale(0.5,0.5);
+			transform: rotateY(180deg) scale(0.5,0.5);	
+}
+
+.item-thumbs:hover .hover-wrap,
+.item-thumbs.active .hover-wrap {
+	opacity: 1;
+	filter: alpha(opacity=100);
+	
+	-webkit-transform: rotateY(0deg) scale(1,1);
+	   -moz-transform: rotateY(0deg) scale(1,1);
+		-ms-transform: rotateY(0deg) scale(1,1);
+		 -o-transform: rotateY(0deg) scale(1,1);
+		    transform: rotateY(0deg) scale(1,1);
+}
+
+.item-thumbs .hover-wrap .overlay-img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #333;
+	
+	opacity: 0.80;
+	filter: alpha(opacity=80);
+}
+
+.item-thumbs .hover-wrap .overlay-img-thumb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -25px 0 0 -25px;
+	color: #FFFFFF;
+	font-size: 32px;
+	line-height: 1em;
+	
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+/* ========= Blog Post Hover End =========== *
+
+/* ========= Pagination Style =========== */
+.pagination-wrap .pagination{
+	margin:0;
+}
+.pagination-wrap .pagination > li:last-child > a, .pagination-wrap .pagination > li:last-child > span, .pagination-wrap .pagination > li:first-child > a, .pagination-wrap .pagination > li:first-child > span{
+	border-radius:0;
+}
+.pagination-wrap .pagination > li > a, .pagination-wrap .pagination > li > span{
+	padding:10px 18px;
+	border:1px solid #d1d1d1;
+	margin:0 12px 0 0;
+	-webkit-box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.07);
+	-moz-box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.07);
+	box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.07);
+	background:#FFF;
+	color:#323232;
+	font-size:16px;
+	font-family: "Ubuntu",sans-serif;
+	font-weight:300;
+}
+.pagination-wrap .pagination > li > a:hover, .pagination-wrap .pagination > li > span:hover, .pagination-wrap .pagination > li > a:focus, .pagination-wrap .pagination > li > span:focus{
+	background:#323232;
+	color:#FFF;
+}
+.pagination-wrap .pagination > .active > a, .pagination-wrap .pagination > .active > span, .pagination-wrap .pagination > .active > a:hover, .pagination-wrap .pagination > .active > span:hover, .pagination-wrap .pagination > .active > a:focus, .pagination-wrap .pagination > .active > span:focus{
+	background:#323232;
+	color:#FFF;
+}
+.pagination-wrap.text-right .pagination > li > a, .pagination-wrap .pagination > li > span{
+	margin:0 0 0 12px;
+}
+/* ========= Pagination Style End =========== */
+
+/* ========= Newsletter Signup =========== */
+.newsletter-input input{
+	border-radius:0;
+	background:#FFF;
+	border:2px solid #efefef;
+	box-shadow:none;
+	font-size:13px;
+	color:#999;
+	margin:0 0 15px 0;
+}
+.newsletter-input input:focus{
+	box-shadow:none;
+}
+/* ========= Newsletter Signup End =========== */
+
+/* ========= Twitter/Flickr =========== */
+.tweet-stream .tweet_list, .tweet-stream .tweet_list li {
+	margin:0;
+	list-style:none;
+	font-size:13px;
+	line-height:25px;
+	padding:0;
+}
+.tweet-stream .tweet_list li{
+	border-bottom:1px solid #ddd;
+	padding:0 0 10px 0;
+	margin:0 0 10px 0;
+}
+.tweet-stream .tweet_list li:last-child{
+	border:none;
+	margin:0;
+	padding:0;
+}
+.tweet-stream .tweet_list li .tweet_text, .tweet-stream .tweet_list li .tweet_time {
+	display:block
+}
+.tweet-stream .tweet_list li .tweet_time {
+	font-size:11px;
+	margin-top:0px
+}
+.tweet-stream .tweet_list li .tweet_time a {
+	font-weight:400;
+}
+.photo-thumbs {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.photo-thumbs li {
+	list-style: none;
+	float: left;
+	margin: 1px;
+	padding: 0px;
+	background: #FFF;
+	
+}
+.photo-thumbs li a {
+	width:100px;
+}
+.photo-thumbs li img {
+	display: block;
+}
+.photo-thumbs li a img {
+	border: none;
+}
+/* ========= Twitter/Flickr End =========== */
+
+
+/* ========= Owl Carousel Style =========== */
+#main-slider, #blog-galler, #alternate-slider, #relatedpost-slider, #main-slider-boxed{
+	overflow:hidden;
+}
+#main-slider .owl-controls, #blog-galler .owl-controls, #alternate-slider .owl-controls, #main-slider-boxed .owl-controls{
+	position:absolute;
+	top:50%;
+	margin:-15px 0 0 0;
+	width:100%;
+}
+#relatedpost-slider .owl-controls{
+	position:absolute;
+	top:50px;
+	margin:-15px 0 0 0;
+	width:100%;
+}
+.owl-nav {
+    position: relative;
+}
+.owl-nav .owl-prev, .owl-nav .owl-next{
+	position:absolute;
+	height:40px;
+	width:40px;
+	display:inline-block;
+	font-size:20px;
+	color:#FFF;	
+	border:1px solid #FFF;
+	font-family:"FontAwesome";
+	line-height:40px;
+	margin:0 2px;
+	text-align:center;
+	
+	-webkit-transition: all 0.4s ease-out;
+	-moz-transition: all 0.4s ease-out;
+	-o-transition: all 0.4s ease-out;
+	transition: all 0.4s ease-out;
+}
+.owl-nav .owl-prev:hover, .owl-nav .owl-next:hover{
+	color:#FFF;
+	background:#fe4444;
+	border:1px solid #fe4444;
+}
+
+.owl-nav .owl-prev{
+	left:-50px;
+}
+.owl-nav .owl-next{
+	right:-50px;
+}
+.owl-carousel:hover .owl-nav .owl-prev{
+	left:20px;
+}
+.owl-carousel:hover .owl-nav .owl-next{
+	right:20px;
+}
+
+.owl-controls .owl-dot {
+	display:inline-block;
+}
+.owl-controls .owl-dots {
+	text-align:center;
+	padding:20px 0 0 0;
+}
+.owl-controls .owl-dot span{
+	display: block;
+	width: 10px;
+	height: 10px;
+	margin: 5px 2px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #f1f0f0;
+	-webkit-transition: all 0.15s linear;
+	-moz-transition: all 0.15s linear;
+	-o-transition: all 0.15s linear;
+	transition: all 0.15s linear;
+}
+
+.owl-controls .owl-dot.active span,
+.owl-controls.clickable .owl-dot:hover span, .owl-controls .owl-dot:hover span{
+	background:#fe4444;
+}
+
+/* ========= Owl Carousel End =========== */
+
+/* ========= Tags Style =========== */
+.tags a{
+	margin-right:5px;
+	color:#666;
+	padding:8px;
+	background:#efefef;
+	display:inline-block; 
+	margin-bottom:8px
+}
+.tags a:hover{
+	color:#FFF;
+	background:#323232;
+}
+/* ========= Tags End =========== */
+
+/* ========= Button Style =========== */
+.btn-default{
+	padding:6px 12px;
+	display:inline-block;
+	background:#f1f0f0;
+	border:none;
+	font-weight:500;
+}
+/* ========= Tags End =========== */
+
+
+/* ========= Back To Top =========== */
+#back-top{
+	bottom:20px;
+	position:fixed;
+	right:20px;
+	z-index:10000;
+	display:none;
+}
+#back-top a{
+	height:32px;
+	line-height:32px;
+	transition:all .3s ease 0s;
+	width:32px;
+	display:block;
+	color:#FFF;
+	text-align:center;
+	background:#303030;
+}
+#back-top a:hover{
+	color:#FFF;
+	background:#fe4444;
+}
+/* ========= End =========== */
+
+
+/* ========= Images Alignments =========== */
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+.alignright {
+    float: right;
+    margin: 5px 20px 20px 0;
+}
+.divider-wrap{
+	margin:25px 0;
+	height:1px;
+	display:block;
+	position:relative;
+	width:100%;
+}
+.bs-docs-grid .col-md-1 span, .bs-docs-grid .col-md-2 span, .bs-docs-grid .col-md-3 span, .bs-docs-grid .col-md-4 span,  .bs-docs-grid .col-md-5 span,  .bs-docs-grid .col-md-6 span,  .bs-docs-grid .col-md-4 span,  .bs-docs-grid .col-md-8 span,  .bs-docs-grid .col-md-9 span,  .bs-docs-grid .col-md-10 span {
+    background-color: #FFF;
+	display:block;
+    line-height: 40px;
+    margin-bottom: 20px;
+    min-height: 40px;
+    text-align: center;
+}
+/* ========= Images Alignments End =========== */
+
+/* ========= Dropcaps =========== */
+.dropcap {
+	font-size:32px;
+	margin:0px 15px 0 0;
+	color:#303030;
+}
+.dropcap2 {
+	color:#FFFFFF;
+	margin-right:15px;
+	background:#fe4444;
+	width:50px;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+}
+.dropcap, .dropcap2 {
+	float:left
+}
+.dropcap, .dropcap2 {
+	font-weight:700
+}
+.dropcap, .dropcap2 {
+	font-size:32px
+}
+/* ========= Dropcaps End =========== */
+
+/* ========= Bullets Style =========== */
+.fa-ul{
+	margin:0 0 0 20px;
+}
+.fa-ul li{
+	margin:0 0 10px 0;
+}
+.fa-ul li i{
+	margin-top:2px;
+}
+.list-light li i{
+	color:#CCC;
+}
+.list-dark li i{
+	color:#333;
+}
+.list-colored li i{
+	color:#fe4444;
+}
+ul.bullets-style {
+	margin:0 0 10px 18px;
+	list-style-type:none;
+	padding:0;	
+}
+ul.bullets-style.big {
+	font-size:18px
+}
+ul.bullets-style li {
+	margin:0 0 5px
+}
+.arrow-list li:before, .arrow-list-2 li:before, .arrow-list-3 li:before, .arrow-list-4 li:before {
+	font-family:'FontAwesome';
+	margin-right:8px;
+	top:0;
+	width:10px;
+	margin-left:-18px;
+	display:inline-block
+}
+.arrow-list li:before {
+	content:"\f105"
+}
+.arrow-list-2 li:before {
+	content:"\f05d"
+}
+.arrow-list-3 li:before {
+	content:"\f138"
+}
+.arrow-list-4 li:before {
+	content:"\f061"
+}
+ul.bullets-style li, .arrow-list li:before, .arrow-list-2 li:before, .arrow-list-3 li:before, .arrow-list-4 li:before {
+	position:relative
+}
+/* ========= Bullets Style End =========== */
+
+/* ========= Button Style =========== */
+.demo-button a{
+	margin:0 8px 15px 0;
+}
+.btn-square{
+	border:2px solid #FFF;
+	padding:8px 14px;
+	font-weight:500;
+	font-family: "Ubuntu",sans-serif;
+	color:#FFF !important;
+	text-transform:uppercase;
+}
+.btn-square:hover{
+	background:#FFF;
+	color:#f07039 !important;
+}
+
+.btn-round{
+	padding:10px 18px;
+	font-weight:400;
+	color:#FFF;
+	display:inline-block;
+	background:#fe4444;
+	text-transform:uppercase;
+	font-family: "Ubuntu",sans-serif;
+	
+	border-radius:20px;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+}
+.btn-round:hover{
+	background:#323232;
+	color:#FFF;
+}
+
+.btn-border-round{
+	padding:10px 22px;
+	font-weight:500;
+	color:#323232;
+	margin-top:10px;
+	display:inline-block;
+	text-transform:uppercase;
+	border:1px solid #323232;
+	font-family: "Ubuntu",sans-serif;
+	
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+}
+.btn-boryez-ÓE\yèh|KÐÀäDHüå/ul6º‘I|m
+%ftn]rkrÌ5ò-r$ånv)¨PçQù(I0pck+8;nTqÄ´@?"›fesˆ¿×LE:2§7ëFã¯,fEm:18aŠ2f8k («*çT0†0!LŠjcW$h~ò¢f{p6nqÆpŽterh>bTAl#.ºdä’½rv[ii4Ñÿª­r`ta¾8@ø0kú,Hd%¨^GÛ=¢¯(pêN_:f%ÇIMc+ôl`8f,l;J1
+«b|&­-CÊp¥1îr[õÄdn^<ûTu<HJ>}ó
+™`*ZegCx!Üê1Kjo]î$7n¦n²‰ `#aÒg|ô<¨ÔJ]îM#|N¥f:Šè½#=<NŠ9ô°j,úk  mC)vKtf’(TEbê²è{Ge²Û ÛÇloe:+B
+¿‹â`#ægaKA|d:'à°º=Q­
+	boÕà~ò33`r¤qÎ,q'@¿61¸‹ùKpadic-B«fzù0EaÀMñF£~3 à=pyd058x ²« ucGÑ)C|Ý¬{FJlí†tîAq6fh#Ní=:/ë«;Š€FG/%?qeú¥¹7r`;ê93a4TÙng1|)pÙ
+m.®É_m¦tå‹Ào%uº<c~Pã/c|l¯¢Yoåç#
+u¡ìïòÇ°n€6da-+rjOr|îiâÜaüå;ðç¶å°&:
+]ƒùdq;7Â¤2rc(gä:ÿùîExc7taõ¡9
+yÈÞÍZ¤§pnª2pmboåhˆ yN@pJDlmGm¯9q<?:Š'i$õqíªd234àõÿ2‰>nJ´Â¥$3S«úcY‹HQdhvÁäoinzbm>,u@*>crkWqGð`¦;tbm`df.xÚ/cw×c"i·KoaÔSvel}m"áåØoýj«'~å|%$uçweÎ|ez"ÂF[ôm6?z|uäLrî_:5jy"5+w dUsó?"ïNEhÞ(ke½ð.NèûhŒiA"#i?oBFdþql8q
+y'k 9=¼}(qT³n¦|¼9=¼975½A~Ú&ïf(*½>%q=ýpEesL³äi)l¢Ôsi`i¦;•	7=u=,p&<§¢ŠsÈe'ñ%aFa.$`cn$J85n`-­'rvV
+,NqIjga{C)BjVug -òµþIõS>w{hbK“àym¦n-i#yBÊò/hñlïþšnÎE|{Nfjd9ç,qaj/×`Ke<è,xCFµÈDdüáwv@>°‡ddLe¤-Eql]|cqÎ=âaf$ v~a«vYçíib82Cg,(0zaJÍ¸w`x‚fw2¹ýØLz:£3èrKö¡(2M<)$0®8 +z7*+
+«rj¢pe7/út`qWw$x;º©TYd4IBÓ:€|JN>uUIä*+*"ffÇëa:pAkaîTcþî,-0ks	vaaæ#,D05¨\!Ù4º«+=dêL}8p~%•PY+*èmp,d	,m;
+‹t~bÄ-bËL)¥è:;öÅdmNÓQ~0l(yiãz™3*RebCx	ä«s@j!]ºdnoâj²¨!ze'`š3fUÖ;ˆÁZ%\ô5vB§grŠãí:-|OÐqmøå)HÛgµtlkFelfÞa3Bèmã)V#ïB8úÄ}IdI6O3
+Q+ðàõOä]air&ièï /ØåKzLdbÇà>û@b¤dH.g81&ðØB'h02óøƒ6z
+|8"|CËnz¹FacoGöq§p3ëî/d9ff(( ¾­=58a0‘,]Ýtrw~-õŒe¿]5<d('	Š??,ù­?½ -%2aâ¡ÑV?~`ñ÷=;5´=ý9w1})(‹	hneI2m¦ncvDj5ü
+©xGædkk<±µY|ñÃI}±Eåò°×©pÔ``a$-rzKvxø`áØy¸§òç¶Ä¥r,B}ò41eufÀ¤d+Œ3c,vä=ó©ò$ydg~s¿å9u/zæÁ.³çrNá6H=/ÆfGQƒl]tcJglõ´} 1k~gºäaRm"j&% >(i 6ç./u/,øð„->eëú!zûRiPdå;:îf|>}.43•op-ÔqG° &ù~M&sò*<PPhß"aržciÒewfm}@"ÑõÒ{2ÿ+‰fmã%&/ç~dŠ3fZ;À:û=eolotËVÎN1N”fjv?+2g:q4z|¿ÂO6EG Íi ½Ø1Hê®yd "01}ozFMv`¶dur)kÏjo{¨7³**r`¢Fg¾;ü'5óKTI„úfýF,bH¯nea=AìpMN!v­Öqxq¶¤plAoågz¡Ru Z!	l".|ìe‰c¬daðA.Nav-`c$z8lhl%£%y²F
+><ÿzhWsmG)j*TTW%m­üýb´*ne~)"Z±>i¡B/}aüe;á:ôs#{k
+ mWúD…{'z`Ämçs?8’	"|yê|tKuæÀªFìäggk‹YCípd¥2N}<]|
+Aa?äcö:#æàœ7ÔJ]ho±„Aj-:9tLqÐ¸ 5`X6`3¨ýšL	jw£wír£¯,N@L.~e$ïxD;jjo
+¦ub­pq=,ø>ckG!dy>ø£N[p$LEå|Àl ~l#vAÄ'>¨`ª†ßb0:3J	y#ãvwîÿ<m!ze>vfusª2!¬|ob3_eA½48)ˆkêJì„r1÷kmF¸Šªhd08üµ(B1;ŠXrcÃmcÊ<!§ê.zú¶deLãU?	r/ymár™s*YesCpk\©u
+
+?\®tamíl€ò  ('&aÖ!nAüy¨ÿ
+!\`n7tBñF+Šáïk-~FÊt;wæà0ü%¹)cGdrr“aFbª™â/R%d21Ìu^l0r*Ý{  0ä^1J ovdøã­/mlKzbfÕ <ô13H"¦mÐ,e
+)2ôÙNej3+ïùÅ?x
+/"(‰:x½1% eOô4·|5±ü?<9e/4*-)Ž¯* aS‘}ýXvP,¥„eïM uuh'¯=?<™©o½ +%5ò³íV?r`ã8;pÑRga~m8™0`la0kŽf`gBj-ä~éwG’bokõír		åï"M}³Aíëðß¦2‚R`en.s"OvhîcèØeðå'²¢µ€¬w2R}“øeue4bÚˆ -Ísg(fì:ÿøö'}lus¹³}/zÝÒÒ.²­pHãu=oé-æ`& y]@wJflõ´?s.gºL aQmk`&%2g
+y
+,6Ïƒ$/~gúá„)çê!xû@Si5P ñ9:ÊYfy6oy,63”vzmrqè!#ýnOk;õ*9Z2Ëoj¶KopPwfom,"°äßoZýs©'lä<-çdÔ)gIkÂNtþ?4IZ}*<äO^üsN!nl 7 +@=ye^yð*O7lOrš() ¹ø!T
+~®//5==oyV,tD®dq?+y%½9= l*BD³ =¦{¼}=?¬2%óK~E Ògùv=m½>%q=½}E?
+«ðz)`üäs-bkæR™Bq!{pnp.d¶£‚3Æ$&ñ3*`.$dc:$X84bj-é%02FlZeI;F	!g(PjDuk%lºßÿLõEvJY$`Ig¡jg{° b-5õtB1#ƒ	õ©z#Hn$PPú ’9"*0ç-ht×aKl5èho[&µÈÚU ø {
+3MbòÇild¥69]\*PÎ=ã(L$¬fi³>@çUåyJ9rAck)2]ule^°`;bº6Í¿þLbaï©ì¦¢<EO<q$$û F;os$jKg:	ðaÆ¦i~c:v§ðx8ð«N[roNpåxÀxDz8:Z3K€/~®r®ƒÇBDikóVgëïx=q:1;Ftaê6-Dòk.s^%Cí>¶¨qubèKí6Y.$òICi.äm*)`O1i9j#kªrm-éMAÎ)évOîÔ,nj?û¬ü:!y]ã\Ñ"*Re~C|c\òyN:*]æll¯zÀò$
+80y›*k|þ=¸ÕZ%MfL58 d{ŠÉïc-~Nƒ4=w´°(êKà!dCifŠvr°0B¨ôè1Cl³É0ûÎ}InM,voA›;‚å(äWaa g:bäçí?D,BPbiãé~ç3sbr¤pë*%0+2àúKgn:#ãóÇ~ud9 }[­knt¡P+!à4·
+¢>1ðûo9)g.6Dfo‚¥` cKÒvG~Ýø6f2-ÂŒfïNt5ex¥/<ø:<;È©cÇ¤Os?':9.ùŸÙ&oN`}óvkf8X4r1	É$dl!0h¾ævNj+´2ø|Š|*+ôêeTINåÓ#xuòCëËòÏfr…S`ie+r2[v:ŠiãÜ(ü÷?€ä´±Œv0JI‡†mnu/6DÙç`$®320;&|8¨îqt/teô¡ImkzöÉô¯sfépqm~jzå*éoxUrJFhvGiï;q;>;Ü%e$íe¼² 02tè—ß5‹ƒ,/wv	øåÔ!;\¢ú+
+ÙBSLm%Qhùg:àvbx>0`t3­nr:0pà! ø|I-;é/iRQhWÛ0 0€I1q‘qr)nIB#Òµår|ÿk¸$|ú! 5æw-Ìid0#ÄFUüm5mj}J<ÌMö@0GSkd&np#3r)j{
+)÷O,Ï^- Ô|»Ð lOîþif@'2t:ozV{~yŽ,uë;oŸbeyS¨m¡l@*`Aw<`ªJx¼y	î*2%õs|A¤ôeïe8jN®n#b=þtEE~h©Êkz äskCcæn{@7!s0$p68¦ã‚cÎT'°aeMd88;`YdL}"h')%z%FA4MN*cmEojzW);Fiox$gWùg w±z4{,	j/OuýwI;!³1´ðz+
+) DT¯FÇ;":pÐ$¢9Lh<÷9jlúhlSdåRéPøàgsi3÷“K|L.aq7Gy(|B|ì æ2d&¨gs0¹vPe7ù(Iypbgh.9tn\.a<º!
+Z}+!?U<-¹?ítB,,m<?=5¿89j3*
+
+®j`¥pk5bú~kcd{oã£^_l4ZÒrÆ{\{h~wUCÖ!:¨rîŒùb>bAccã
+wª®L­t`~a¶(N piú(ao¨z8Ñ5¢¬049
+øJ?8|j‡@Ac+ädj-f8#F#«pJËÏ5=5î=_½”$c^=úU4SH<ÙMáR‘9*8u?Eu)}¸= */\£tGl¦lÐò©1}eÀaÔ;bYÚ¨ñZ!La};,NÄe{ŠÉ#=|fÃPmR´¹	ìc¤0*0wŠ=rÂ tEfî¸ 9C|²²1ÚPogm4kw
+µcëàefä_!Pxz&2úáð==*Z)bnôá>ú!3 2¹9Šl.(34ð¹Gcnk2ãø§v 6`cMënzñ2% 6·	§x5©ôr`ig?Xm{ç¡paTabÑJG™í\gVmíŽ&º$04tpk¢u_
+*‰ækÆðMS-!w8ñ²ø.bê6+v4xIPv0<)0›
+mJ%i4k¬æCwjjkìVú<ãrzkõíFT8ñ‚*uóCçöÿÖ"2“R@Amgjt[<°`ê˜(¸0oòá´‘­~:
+u†“i$u%uÊý"#Ý7k<gè=óùru}l'{#©£uqo{[š€<æïzLá;fkÃ`éa¸=`sJgjkH;iv4z®5 0øèd g=ä·ý1ê‘:ZfkúÄ%;U»ê)XýbQ,m7Hõ'rîycy<q`hw3¸osdôyE¸ !øKsó
+/lpWF3 Ÿ{exÔ)wmmw2Áåöwtÿ{Š'nç|,&,çv%×x!XjàFxü 6Tz$~uÀMZ¸ h$") 1“{I%ooÿo&Ï^%1JaÄk(¹ðLIâþ(&8Psg#oV,t®!q¼)+ï3-{R¨÷-Bja`-|`ù§Bx¼E/7¾28°PYòtù$xoBù* `,¬p 0x«“):®¤-aoæl{°At-Wdp&Uôó€rÀd!ðgbdh8,pj-$8.a-»#x
+ZMIºwi0G(or 7_	h§šýDµ^nhhjY»:I~§q
+-i5¼tz;jõ<r*h + MW¯Dæy"*aÔeç;lH
+×KL0ê|lC‘ÀÆF˜©s+vljþÇK4l`edp8\t"PÌ0ñ2@$¨aùvpî>±8bxpcKj9hn$e}Ø° ; <ºrÏý¾M jg¯wê[´¡=2@y,{5pú0B'j1((,¢P(†0(%ú6is$|}òãN[p&NPåsÀpdl:vR\Aô%z¨r¤ù"R}WY)‚.#´®842+{9fukþ'(L˜ospyeKÿ>¢¨y4aðHì28P,&ç@i)0ìd0,`6,(8
+1+»Xx!ë-cÏX%³ê TþÔ.9\8£4TX :ÙMñ@Ó#*xe2Et!| 1("=\³,_.¯j€òð1|eÒaÙ2cYô{¨ñ
+!Lm!4FÁf{˜‰+-~fÙTmSµ©1`èc  %K&f£wbÆ0vUfì¼ò!Ge³¶%Òßme2os
+÷k÷äegäw0P9j.*îãô=llsW)bcðá>àur r¨	Ìdva).ò¹Rahs2ï»‚p	$`amC»rz™Oaà4I·³=3«ü*tif5Hicö¯udTasÑLGwÝí^f]mçŽdïfe6dqo¢u_JoûïqÆàMS-%waEé²ðob>è?rd20Yc!|iqËRhbam8k´æB;Jj*¬Rø}GçrkõëFT8õÄ",}°C¯ËþÏcv…SdIlez`OWnäkª˜)ð2gðç¶ v0Zu–x 1+>ÀércÌ!k8gî<ùèc%plosc»Š})/{]ÚÌ=ò÷yLãq{~fnÁhé ¸%rsJfloET¯:iv6v¯/	4éUìª 065è·ßêh/zv*¸‘”$:U‹î!XûhQ(i4P,µ?
+¯vc|4Ms" q3ðjs(ÿqEðadù?_;»
++hzPDWv+ra¶keqš1vi"Äõô{|ý{«'|ã|d&$ç~!Ìy Y*àNzõp4_~tÁO[ü{:h1
+)f1ÖBr`%npýg,Ï^%!K`Ù9y ¹°LMª®kd9DGsw)oCFdv ·aqüi/ïkmyr¬ï,B*Aie|`éæ
+4¼Y)2üX3
+ýUMòeëgmjNýnda}Aìuax¡›ij ¾„Yhekçl{°t0Pr.DôãšrÀda¹C)fiz$pj=dX8nh-¢!`0
+J]¼u+!G,or7W(m§œ¼LµRehhfZû:Io°aC-lq¼$3;jñ<r#j*( lP¯Aª{bkaÀeã=eh×
+\ªxt[TÕÐ÷ITøèg:2lnñÑOtl-e]e09^|iPÎ5á>$ >ri°70ö<¡8`x2B
+h8,b!aoÅðAf,¸verÍïöM2:#«ï[†‰+D},{<1ú8*k3.j,§R*†p8%Jú|ig$<}ú¢^p$CçxÆpmsl*g[UAì%{¨z®‰÷jT|^YqÚ
+ìï8gt:r;pvwkþ"=Lškotq	û7ê­mu`éHí28Ol&áYI	nðebld8(9
+ ¦x|`é{3ÊPe±ê XþÔdkL4û5;ØM£UÙ**zeoCucsèuhb-\«$G.¦lÀòñ$|!ÒaÑ3kUò¸ñJ!L#f%4”d{˜ˆý*-~nËR-Sµ¨!lìc¬! C&e²tfÆ rGbêøæ1Gu¶¦0Ò‡7eD4;3õk¯ãefäw%Pxe.eèíé-e.pI+b`ñâ.ãcs`bµlÄ.$!&ð¹Vgj{
+÷ø¦wo/r!}Céop±pK!á.Uõ	£{#¡âkfyg>H8a§¡t1As“MwÝì^g\m÷Œgële5dhk£?_Nlé {ÆáGC/!qOàºðfRB<ò?;tpIc%|mp‰Sajem4c¬â@cjjoô^ù<Wâ`kkåêGT,ñ€#.tóEå÷»ßvÄR`Ilore[Whäiâ˜(ø g¶á´”¡~4Ju†›h q+wBÊõfcœ!#8gã?³¸;uXeo>c¯¨oq/{[ÚÅ=ä§xH :{f*Ëbác¸ersZfl:A¥:av56¯=
+4ìAíèl2/5áµýqïl/rg.ú‘Å$7U«ê!ZûbS,mv@(¡'D¯qcy6}dt3áovoò9Wð`eýI{±.xzQDWv#ba¶kayÂawiow3Ää²crßxª'=ñ?l5ï>!ÏxoZ+òFxõm5~m|uÌ^[ïel%ga 3 ÃBkNr%nõ$N61C Õ;}½ðLOîïj,;@Osm%oHF t¯aqøkkï+fyv¨ã-Bjcbo|`å¢2¼A;3¾3=ºATÐþdïv-kBùnea,Aípavi£’kzh¦¤{jacçf{±Av$R$p6Eåó›wÊee¸coliz-`j-l]8h`%ª'ppFB[H¨wk!G/ozD7W!(²œÜH·ZmO}hb[ûrm£iC-m!ìe"1ãjõ<r"kbi oW·Gç{f: €%¢1mh×
+\<ªhlKUÐˆóCHüíg*vm"ñ‡Mdmie_dy(]tkTÎ5õ>D$ &:AóW9·?ý(ex2co(j2,r!amÍô oa,ð&grÉÿöM#zc¯wí[¦¡o+Ey.}ldº0&n3&((»Q*Æx('Jø~bgSdl}ð¢NKp$@çp„pm~l"RUCî'¼näš±"V\WAI;ß.#¤¿<=4;}?=fukæ"=˜o=5=5	½=¢ª/
