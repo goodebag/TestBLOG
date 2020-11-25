@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestBlog.Models;
+using TestBlog.ViewModels;
 
 namespace TestBlog.Data
 {
@@ -16,5 +17,9 @@ namespace TestBlog.Data
         Post Editpost(Post PostUpdate);
         int getpostcount();
         Post GetPost(int Id);
+        int SaveLike(int postToLike);
+        Comment SaveComent(Comment comment);
+        IEnumerable<RePost> AddComents(IEnumerable<RePost> post);
+       RePost AddComent(RePost post);
     }
 }

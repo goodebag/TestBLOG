@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Post>
+﻿@model IEnumerable<TestBlog.ViewModels.RePost >
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,37 +7,58 @@
 
     var photo = "/images/" + post.Photopath;
 
-        <div class="item ">
-        <div class="card">
+<div class="blog-post">
+    <div class="item-thumbs">
+        <img src="@photo" alt="Slider Image">
+    </div>
+    <h3 class="blog-title text-center"><a href="#">@post.Headline</a></h3>
+    <div class="blog-outer">
+        <div class="meta">
+            <span><a href="#"><i class="fa fa-tag"></i>@post.Discription</a></span>
+            <span class="date">@post.Date.ToString("dd/MM/yy hh:mm")</span>
 
-            <div class="card" style="height: 600px;">
-                <img src="@photo" style="height: 600px;" />
-            </div>
+        </div>
+        <h3 class="blog-text"><a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostId">@post.postWriteUp</a></h3>
+        <div class="admin-text">
+            <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
+            <i>By <a href="#">Ruaha Admin</a></i>
+        </div>
+    </div>
+    <div class="blog-text">
 
-            <div class="meta text-center">
-                <span><a href="#"><i class="fa fa-tag"></i> Interior</a></span>
-                <span class="date">@post.Date.ToString("dd/MM/yy hh:mm")</span>
+        <div class="meta position-absolute">
+            <span><a asp-action="SaveLike" asp-controller="Home" asp-route-id="@post.PostId" data-toggle="tooltip" title="" data-original-title="@post.likes" class="like-icons"><i class="fa fa-thumbs-up fa-3x"></i></a></span>
 
+            @if (post.Comments != null)
+            {
+                foreach (var comment in post.Comments)
+                {
+                    <span>
+                        <a href="#" data-toggle="tooltip" title="" data-original-title="   User : @comment" class="comments-icon"><i class="fa fa-comments-o fa-3x"></i></a>
+                    </span>
 
-                <span><a class="like-icons" data-original-title="25" title="" data-toggle="tooltip" href="#"><i class="fa fa-heart-o"></i></a></span>
-                <span><a class="comments-icon" data-original-title="12" title="" data-toggle="tooltip" href="#"><i class="fa fa-comments-o"></i></a></span>
-            </div>
-            <h2 class="blog-title text-center"><a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostId">@post.Headline</a></h2>
-
-            <div class="admin-text text-center">
-                <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
-                <i>By <a href="#">Admin</a></i>
-            </div>
-
-            <div class="blog-text">
-                 <p><h3>@post.postWriteUp</h3></p>
-            </div>
-            <div class="blog-bottom pull-right">
-                <div class="pull-right"><a href="#" class="more-links">Read More</a></div>
-                <div class="clearfix"></div>
-            </div>
+                }
+            }
         </div>
 
     </div>
+
+    <div class="blog-bottom">
+        <div class="text-danger">Recent Comments  :</div>
+
+        <div class="position-absolute  more-links" style="margin-top-0; height:60px;width:700px;border:1px dashed #000000;font:16px/26px Georgia, Garamond, Serif;overflow:scroll;">
+            @if (post.Comments!=null)
+            {
+                foreach (var comment in post.Comments)
+                {
+                    <a>User : @comment</a>
+                    
+                }
+            }
+        </div>
+        <div class="pull-right"><a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostId" class="more-links">Read More</a></div>
+        <div class="clearfix"></div>
+    </div>
+</div>
 
 }

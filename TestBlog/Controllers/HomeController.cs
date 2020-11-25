@@ -28,8 +28,22 @@ namespace TestBlog.Controllers
         [HttpGet("/")]
         public ViewResult Index()
         {
+            List<RePost> rePosts = new List<RePost>();
             var NewsUpdate = _blogRepository.GetALLpost();
-            return View(NewsUpdate);
+            foreach (var post in NewsUpdate)
+            {
+                var postToUse = new RePost();
+                postToUse.Date = post.Date;
+                postToUse.Discription = post.Discription;
+                postToUse.Headline = post.Headline;
+                postToUse.Photopath = post.Photopath;
+                postToUse.PostId = post.PostId;
+                postToUse.postWriteUp = post.postWriteUp;
+                postToUse.likes = post.LIKE;
+                rePosts.Add(postToUse);
+            }
+          var  OurPost = _blogRepository.AddComents(rePosts);
+            return View(OurPost);
         }
 
         // GET: HomeController
@@ -37,7 +51,16 @@ namespace TestBlog.Controllers
 
         public IActionResult Details(int Id)
         {
-            var YourNews = _blogRepository.GetPost(Id);
+            var post = _blogRepository.GetPost(Id);
+            var postToUse = new RePost();
+            postToUse.Date = post.Date;
+            postToUse.Discription = post.Discription;
+            postToUse.Headline = post.Headline;
+            postToUse.Photopath = post.Photopath;
+            postToUse.PostId = post.PostId;
+            postToUse.postWriteUp = post.postWriteUp;
+            postToUse.likes = post.LIKE;
+           var YourNews =_blogRepository.AddComent(postToUse);
             return View(YourNews);
         }
 
@@ -49,7 +72,7 @@ namespace TestBlog.Controllers
         }
 
         // POST: HomeController/Create
-       [HttpPost]
+        [HttpPost]
         public ActionResult CreatePost(postViewModel model)
         {
             Post newpost = new Post();
@@ -86,7 +109,7 @@ namespace TestBlog.Controllers
         public IActionResult GetPostByDiscription(int description)
         {
             var posts = _blogRepository.GetByDiscription((Category)description);
-            return View("Index",posts);
+            return View("Index", posts);
         }
 
         // GET: HomeController/Delete/5
@@ -99,10 +122,10 @@ namespace TestBlog.Controllers
         public IActionResult GetPostByHeadline(string HeadLine)
         {
 
-             var TrimedHeadline = HeadLine.Trim();
+            var TrimedHeadline = HeadLine.Trim();
             IEnumerable<Post> post = _blogRepository.GetPostByHeadline(TrimedHeadline);
-            
-            return View("Index", post);  
+
+            return View("Index", post);
         }
 
 
@@ -110,6 +133,24 @@ namespace TestBlog.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public IActionResult AddComment(string Comment, int id)
+        {
+            var comment = new Comment()
+            {
+                PostId = id,
+                comments = Comment,
+            };
+            _blogRepository.SaveComent(comment);
+            return RedirectToAction("index");
+        }
+
+        public IActionResult SaveLike(int id)
+        {
+            _blogRepository.SaveLike(id);
+            return RedirectToAction("index");
         }
     }
 }

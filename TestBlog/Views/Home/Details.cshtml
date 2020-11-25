@@ -1,40 +1,45 @@
-﻿@model  Post
+﻿@model TestBlog.ViewModels.RePost
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
-    var photo = "/images/" + @Model.Photopath;
-}
+@{var photo = "/images/" + Model.Photopath; }
 
-<div class="item ">
-    <div class="card">
 
-        <div class="card" style="height: 600px;">
-            <img src="@photo" style="height: 600px;" />
-        </div>
+<div class="blog-post">
 
-        <div class="meta text-center">
-            <span><a href="#"><i class="fa fa-tag"></i> Interior</a></span>
+    <div class="item-thumbs">
+        <img src="@photo" alt="Slider Image">
+    </div>
+    <h3 class="blog-title text-center"><a href="#">@Model.Headline</a></h3>
+    <div class="blog-outer">
+        <div class="meta">
+            <span><a href="#"><i class="fa fa-tag"></i>@Model.Discription</a></span>
             <span class="date">@Model.Date.ToString("dd/MM/yy hh:mm")</span>
 
-
-            <span><a class="like-icons" data-original-title="25" title="" data-toggle="tooltip" href="#"><i class="fa fa-heart-o"></i></a></span>
-            <span><a class="comments-icon" data-original-title="12" title="" data-toggle="tooltip" href="#"><i class="fa fa-comments-o"></i></a></span>
         </div>
-        <h2 class="blog-title text-center"><a asp-action="Delete" asp-controller="Home" asp-route-id="@Model.PostId">@Model.Headline</a></h2>
-
-        <div class="admin-text text-center">
+        <h3 class="blog-text"><a>@Model.postWriteUp</a></h3>
+        <div class="admin-text">
             <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
-            <i>By <a href="#">Admin</a></i>
-        </div>
-
-        <div class="blog-text">
-            <p><h3>@Model.postWriteUp</h3></p>
-        </div>
-        <div class="blog-bottom pull-right">
-            <div class="pull-right"><a href="#" class="more-links">Read More</a></div>
-            <div class="clearfix"></div>
+            <i>By <a href="#">Ruaha Admin</a></i>
         </div>
     </div>
+    <div class="blog-text">
+        <div class="meta position-absolute">
+            <span><a asp-action="SaveLike" asp-controller="Home" asp-route-id="@Model.PostId" data-toggle="tooltip" title="" data-original-title="@Model.likes" class="like-icons"><i class="fa fa-thumbs-up fa-3x"></i></a></span>
+            <span><a href="#" data-toggle="tooltip" title="" data-original-title="@Model.Comments.Count()" class="comments-icon"><i class="fa fa-comments-o fa-3x"></i></a></span>
+        </div>
+    </div>
+    <div class="blog-bottom">
+        <div class="pull-left ">
+            <form asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.PostId" method="post">
+                <div class="pull-left">
+                    <textarea name="Comment" id="Comment" style="font-family:sans-serif;font-size:1.2em; width:500px" placeholder=" Hey... Wanna say something? "></textarea><input type="submit" value="Comment" class="more-links position-absolute">
+                </div>
+            </form>
+        </div>
 
+        <div class="pull-right"><a asp-action="Index" asp-controller="Home" class="more-links">Back to Home</a></div>
+        <div class="clearfix"></div>
+    </div>
 </div>
+

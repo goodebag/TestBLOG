@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestBlog.Data;
 
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201124121038_AddedLikeProperty")]
+    partial class AddedLikeProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,28 +199,13 @@ namespace TestBlog.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("TestBlog.Models.Like", b =>
-                {
-                    b.Property<int>("LikeId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Likes");
-
-                    b.Property<int>("Postid");
-
-                    b.HasKey("LikeId");
-
-                    b.HasIndex("Postid");
-
-                    b.ToTable("Like");
-                });
-
             modelBuilder.Entity("TestBlog.Models.Post", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentsId");
 
                     b.Property<DateTime>("Date");
 
@@ -226,9 +213,11 @@ namespace TestBlog.Migrations
 
                     b.Property<string>("Headline");
 
-                    b.Property<int>("LIKE");
+                    b.Property<int>("Likes");
 
                     b.Property<string>("Photopath");
+
+                    b.Property<int>("ReationsId");
 
                     b.Property<string>("postWriteUp");
 
@@ -240,13 +229,44 @@ namespace TestBlog.Migrations
                         new
                         {
                             PostId = 1,
-                            Date = new DateTime(2020, 11, 25, 7, 13, 8, 854, DateTimeKind.Local).AddTicks(7804),
+                            CommentsId = 0,
+                            Date = new DateTime(2020, 11, 24, 13, 10, 38, 304, DateTimeKind.Local).AddTicks(3349),
                             Discription = 3,
                             Headline = "End Swat: Nigerians reject police unit replacing",
-                            LIKE = 0,
+                            Likes = 0,
                             Photopath = "no to swat.jpg",
+                            ReationsId = 0,
                             postWriteUp = "Nigerians are outraged by the unveiling of a new police unit to replace a notorious agency that was disbanded following public outcry over its alleged human rights abuses. he head of the police Mohammed Adamu announced that Swat would carry out the duties which were done by the Special Anti Robbery Squad(Sars). But many are using the hashtag #EndSwat on Twitter to oppose the new unit.They see the changes as not enough to reform the police."
                         });
+                });
+
+            modelBuilder.Entity("TestBlog.Models.Reaction", b =>
+                {
+                    b.Property<int>("ReactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Angry");
+
+                    b.Property<int>("Care");
+
+                    b.Property<int>("Hate");
+
+                    b.Property<int>("LIke");
+
+                    b.Property<int>("Love");
+
+                    b.Property<int>("PostId");
+
+                    b.Property<int>("Sad");
+
+                    b.Property<int>("Wow");
+
+                    b.HasKey("ReactionId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -302,11 +322,11 @@ namespace TestBlog.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TestBlog.Models.Like", b =>
+            modelBuilder.Entity("TestBlog.Models.Reaction", b =>
                 {
-                    b.HasOne("TestBlog.Models.Post", "post")
-                        .WithMany("likes")
-                        .HasForeignKey("Postid")
+                    b.HasOne("TestBlog.Models.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
