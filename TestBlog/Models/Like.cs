@@ -2,8 +2,7 @@
 {
     public class Like
     {
-        public int UserId { get; set; }
-        public User GetUser { get; set; }
+        public string WhoLiked { get; set; }
         public int LikeId { get; set; }
         public int Likes { get; set; }
         public int Postid { get; set; }

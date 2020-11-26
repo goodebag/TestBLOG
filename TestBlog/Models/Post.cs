@@ -13,7 +13,6 @@ namespace TestBlog.Models
         public string Headline { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> likes{ get; set; }
-        public int LIKE { get; set; }
         public string WhoPosted { get; set; }
     }
 }

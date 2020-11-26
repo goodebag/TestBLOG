@@ -39,7 +39,7 @@ namespace TestBlog.Data
 
         public IEnumerable<Post> GetALLpost()
         {
-            var AllPost = context.Posts;
+          var AllPost=  context.Posts;
             return AllPost;
         }
 
@@ -70,9 +70,10 @@ namespace TestBlog.Data
 
         public int SaveLike(int postToLikePostId)
         {
-          var liked =   context.Posts.Find(postToLikePostId).LIKE +=1;
+          //var liked =   context.Posts.Find(postToLikePostId).LIKE +=1;
             context.SaveChanges();
-            return liked;
+            // return liked;
+            return 1;
         }
 
 

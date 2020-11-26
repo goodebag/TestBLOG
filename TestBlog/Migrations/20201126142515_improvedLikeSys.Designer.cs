@@ -10,8 +10,8 @@ using TestBlog.Data;
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201125061309_LikepropertyCorrection")]
-    partial class LikepropertyCorrection
+    [Migration("20201126142515_improvedLikeSys")]
+    partial class improvedLikeSys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -209,11 +209,13 @@ namespace TestBlog.Migrations
 
                     b.Property<int>("Postid");
 
+                    b.Property<string>("WhoLiked");
+
                     b.HasKey("LikeId");
 
                     b.HasIndex("Postid");
 
-                    b.ToTable("Like");
+                    b.ToTable("GetLikes");
                 });
 
             modelBuilder.Entity("TestBlog.Models.Post", b =>
@@ -228,9 +230,9 @@ namespace TestBlog.Migrations
 
                     b.Property<string>("Headline");
 
-                    b.Property<int>("LIKE");
-
                     b.Property<string>("Photopath");
+
+                    b.Property<string>("WhoPosted");
 
                     b.Property<string>("postWriteUp");
 
@@ -242,10 +244,9 @@ namespace TestBlog.Migrations
                         new
                         {
                             PostId = 1,
-                            Date = new DateTime(2020, 11, 25, 7, 13, 8, 854, DateTimeKind.Local).AddTicks(7804),
+                            Date = new DateTime(2020, 11, 26, 15, 25, 14, 753, DateTimeKind.Local).AddTicks(7545),
                             Discription = 3,
                             Headline = "End Swat: Nigerians reject police unit replacing",
-                            LIKE = 0,
                             Photopath = "no to swat.jpg",
                             postWriteUp = "Nigerians are outraged by the unveiling of a new police unit to replace a notorious agency that was disbanded following public outcry over its alleged human rights abuses. he head of the police Mohammed Adamu announced that Swat would carry out the duties which were done by the Special Anti Robbery Squad(Sars). But many are using the hashtag #EndSwat on Twitter to oppose the new unit.They see the changes as not enough to reform the police."
                         });

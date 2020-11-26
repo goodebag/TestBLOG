@@ -10,8 +10,8 @@ using TestBlog.Data;
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201124121038_AddedLikeProperty")]
-    partial class AddedLikeProperty
+    [Migration("20201126142318_improved_like_sys")]
+    partial class improved_like_sys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -199,13 +199,30 @@ namespace TestBlog.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("TestBlog.Models.Like", b =>
+                {
+                    b.Property<int>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Likes");
+
+                    b.Property<int>("Postid");
+
+                    b.Property<string>("WhoLiked");
+
+                    b.HasKey("LikeId");
+
+                    b.HasIndex("Postid");
+
+                    b.ToTable("GetLikes");
+                });
+
             modelBuilder.Entity("TestBlog.Models.Post", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CommentsId");
 
                     b.Property<DateTime>("Date");
 
@@ -213,11 +230,9 @@ namespace TestBlog.Migrations
 
                     b.Property<string>("Headline");
 
-                    b.Property<int>("Likes");
-
                     b.Property<string>("Photopath");
 
-                    b.Property<int>("ReationsId");
+                    b.Property<string>("WhoPosted");
 
                     b.Property<string>("postWriteUp");
 
@@ -229,44 +244,12 @@ namespace TestBlog.Migrations
                         new
                         {
                             PostId = 1,
-                            CommentsId = 0,
-                            Date = new DateTime(2020, 11, 24, 13, 10, 38, 304, DateTimeKind.Local).AddTicks(3349),
+                            Date = new DateTime(2020, 11, 26, 15, 23, 17, 760, DateTimeKind.Local).AddTicks(1274),
                             Discription = 3,
                             Headline = "End Swat: Nigerians reject police unit replacing",
-                            Likes = 0,
                             Photopath = "no to swat.jpg",
-                            ReationsId = 0,
                             postWriteUp = "Nigerians are outraged by the unveiling of a new police unit to replace a notorious agency that was disbanded following public outcry over its alleged human rights abuses. he head of the police Mohammed Adamu announced that Swat would carry out the duties which were done by the Special Anti Robbery Squad(Sars). But many are using the hashtag #EndSwat on Twitter to oppose the new unit.They see the changes as not enough to reform the police."
                         });
-                });
-
-            modelBuilder.Entity("TestBlog.Models.Reaction", b =>
-                {
-                    b.Property<int>("ReactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Angry");
-
-                    b.Property<int>("Care");
-
-                    b.Property<int>("Hate");
-
-                    b.Property<int>("LIke");
-
-                    b.Property<int>("Love");
-
-                    b.Property<int>("PostId");
-
-                    b.Property<int>("Sad");
-
-                    b.Property<int>("Wow");
-
-                    b.HasKey("ReactionId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -322,11 +305,11 @@ namespace TestBlog.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TestBlog.Models.Reaction", b =>
+            modelBuilder.Entity("TestBlog.Models.Like", b =>
                 {
-                    b.HasOne("TestBlog.Models.Post", "Post")
-                        .WithMany("Reactions")
-                        .HasForeignKey("PostId")
+                    b.HasOne("TestBlog.Models.Post", "post")
+                        .WithMany("likes")
+                        .HasForeignKey("Postid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

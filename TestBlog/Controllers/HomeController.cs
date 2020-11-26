@@ -39,11 +39,11 @@ namespace TestBlog.Controllers
                 postToUse.Photopath = post.Photopath;
                 postToUse.PostId = post.PostId;
                 postToUse.postWriteUp = post.postWriteUp;
-                postToUse.likes = post.LIKE;
+                //postToUse.likes = post.LIKE;
                 rePosts.Add(postToUse);
             }
-          var  OurPost = _blogRepository.AddComents(rePosts);
-            return View(OurPost);
+          //var  OurPost = _blogRepository.AddComents(rePosts);
+            return View(rePosts);
         }
 
         // GET: HomeController
@@ -59,9 +59,9 @@ namespace TestBlog.Controllers
             postToUse.Photopath = post.Photopath;
             postToUse.PostId = post.PostId;
             postToUse.postWriteUp = post.postWriteUp;
-            postToUse.likes = post.LIKE;
-           var YourNews =_blogRepository.AddComent(postToUse);
-            return View(YourNews);
+           // postToUse.likes = post.LIKE;
+           //var YourNews =_blogRepository.AddComent(postToUse);
+            return View(postToUse);
         }
 
         // GET: HomeController/Create

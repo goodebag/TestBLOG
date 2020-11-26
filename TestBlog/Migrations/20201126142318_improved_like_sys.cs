@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TestBlog.Migrations
 {
-    public partial class LikepropertyCorrection : Migration
+    public partial class improved_like_sys : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,28 +16,29 @@ namespace TestBlog.Migrations
                 table: "Posts");
 
             migrationBuilder.DropColumn(
-                name: "Likes",
+                name: "ReationsId",
                 table: "Posts");
 
-            migrationBuilder.RenameColumn(
-                name: "ReationsId",
+            migrationBuilder.AddColumn<string>(
+                name: "WhoPosted",
                 table: "Posts",
-                newName: "LIKE");
+                nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Like",
+                name: "GetLikes",
                 columns: table => new
                 {
                     LikeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    WhoLiked = table.Column<string>(nullable: true),
                     Likes = table.Column<int>(nullable: false),
                     Postid = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Like", x => x.LikeId);
+                    table.PrimaryKey("PK_GetLikes", x => x.LikeId);
                     table.ForeignKey(
-                        name: "FK_Like_Posts_Postid",
+                        name: "FK_GetLikes_Posts_Postid",
                         column: x => x.Postid,
                         principalTable: "Posts",
                         principalColumn: "PostId",
@@ -49,23 +50,22 @@ namespace TestBlog.Migrations
                 keyColumn: "PostId",
                 keyValue: 1,
                 column: "Date",
-                value: new DateTime(2020, 11, 25, 7, 13, 8, 854, DateTimeKind.Local).AddTicks(7804));
+                value: new DateTime(2020, 11, 26, 15, 23, 17, 760, DateTimeKind.Local).AddTicks(1274));
 
             migrationBuilder.CreateIndex(
-                name: "IX_Like_Postid",
-                table: "Like",
+                name: "IX_GetLikes_Postid",
+                table: "GetLikes",
                 column: "Postid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Like");
+                name: "GetLikes");
 
-            migrationBuilder.RenameColumn(
-                name: "LIKE",
-                table: "Posts",
-                newName: "ReationsId");
+            migrationBuilder.DropColumn(
+                name: "WhoPosted",
+                table: "Posts");
 
             migrationBuilder.AddColumn<int>(
                 name: "CommentsId",
@@ -74,7 +74,7 @@ namespace TestBlog.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "Likes",
+                name: "ReationsId",
                 table: "Posts",
                 nullable: false,
                 defaultValue: 0);
@@ -110,7 +110,7 @@ namespace TestBlog.Migrations
                 keyColumn: "PostId",
                 keyValue: 1,
                 column: "Date",
-                value: new DateTime(2020, 11, 24, 13, 10, 38, 304, DateTimeKind.Local).AddTicks(3349));
+                value: new DateTime(2020, 11, 24, 8, 21, 8, 35, DateTimeKind.Local).AddTicks(2378));
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reactions_PostId",

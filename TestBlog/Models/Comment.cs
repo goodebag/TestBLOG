@@ -12,5 +12,6 @@ namespace TestBlog.Models
         public string comments { get; set; }
         public int PostId { get; set; }
         public Post posts { get; set; }
+
     }
 }
