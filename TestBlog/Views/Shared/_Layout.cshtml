@@ -136,7 +136,7 @@
                                         var photo = "/images/" + myUser.Photophath;
                                     }
                                     <p><img src="@photo" alt="" class="img-circle" style="height:40px;width:40px"></p>
-                            <li><a>LOGOUT<a class="dropdown" asp-action="LogOutUser" asp-controller="User">@myUser.Fullname</a> </a></li>
+                            <li><a>LOGOUT<a class="dropdown" asp-action="LogOutAdmin" asp-controller="Admin">@myUser.Fullname</a> </a></li>
 
                             </li>
                         }
@@ -320,12 +320,12 @@
                     <!-- xxx Widet Box xxx -->
                     <!-- xxx Recent post Section xxx -->
 
-                    @RenderSection("RecentPost")
+                    @RenderSection("RecentPost",required: false)
                     <!-- xxx Recent post Section closes xxx -->
                     <!-- xxx Widet Box End xxx -->
                     <!-- xxx Widet Box xxx -->
                     <!-- xxx Category start xxx -->
-                    @RenderSection("Categories")
+                    @RenderSection("Categories", required: false)
                     <!-- xxx Category End xxx -->
                     <!-- xxx Widet Box xxx -->
                     <div class="widgets-box">

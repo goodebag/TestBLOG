@@ -1,4 +1,4 @@
-﻿@model TestBlog.ViewModels.postDishOut
+﻿@model TestBlog.ViewModels.AdminViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,39 +10,39 @@
             <form enctype="multipart/form-data" method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.FirstName"></label>
-                    <input asp-for="@Model.AdminViewModel.FirstName" class="form-control" />
-                    <span asp-validation-for="@Model.AdminViewModel.FirstName" class="text-danger"></span>
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.LastName"></label>
-                    <input asp-for="@Model.AdminViewModel.LastName" class="form-control" />
-                    <span asp-validation-for="@Model.AdminViewModel.LastName" class="text-danger"></span>
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.Email"></label>
-                    <input asp-for="@Model.AdminViewModel.Email" class="form-control" />
-                    <span asp-validation-for="@Model.AdminViewModel.Email" class="text-danger"></span>
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.Password"></label>
-                    <input asp-for="@Model.AdminViewModel.Password" class="form-control" />
-                    <span asp-validation-for="@Model.AdminViewModel.Password" class="text-danger"></span>
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.UserName"></label>
-                    <input asp-for="@Model.AdminViewModel.UserName" class="form-control" />
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.AdminViewModel.ConfirmPassword"></label>
-                    <input asp-for="@Model.AdminViewModel.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="@Model.AdminViewModel.ConfirmPassword" class="text-danger"></span>
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 
                     <div class="form-group">
                         <div class="custom-file">
-                            <label asp-for="@Model.AdminViewModel.Photo" class="control-label"></label>
-                            <input asp-for="@Model.AdminViewModel.Photo" type="file" class="form-control custom-file-input" style="opacity: 1">
-                            <span asp-validation-for="@Model.AdminViewModel.Photo" class="text-danger"></span>
+                            <label asp-for="Photo" class="control-label"></label>
+                            <input asp-for="Photo" type="file" class="form-control custom-file-input" style="opacity: 1">
+                            <span asp-validation-for="Photo" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -51,129 +51,3 @@
         </div>
     </div>
 </div>
-@section RecentPost{
-    <div class="widgets-box">
-        <div class="sidebar-head bg-2"><span>Recent Posts</span></div>
-        <div class="sidebar-text">
-            <ul class="sidebar-post">
-                @{int count = 1; }
-                @foreach (var post in Model.Allpost)
-                {
-
-                    if (count == 3)
-                    {
-                        break;
-                    }
-
-                    var photo = "/images/" + post.Photopath;
-                    <li>
-                        <div class="image-thumb">
-                            <a href="#"><img src="@photo" alt=""></a>
-                        </div>
-                        <div class="post-text">
-                            <h4><a href="#">@post.Headline</a></h4>
-                            <p>@post.postWriteUp</p>
-                            <div class="post-date">
-                                <i class="fa fa-clock-o"></i>@post.Date
-                            </div>
-                            <div class="post-date">
-                                <a href="#"><i class="fa fa-comments-o"></i>@post.commentCount</a>
-                            </div>
-                        </div>
-                    </li>
-                    count  +=1;
-
-                }
-
-
-            </ul>
-        </div>
-    </div>
-}
-@section Categories{
-    <div class="widgets-box">
-        <div class="sidebar-head"><span>Categories</span></div>
-        <div class="sidebar-text">
-            <ul class="category">
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Entertainment</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.EntertainmentCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Sports</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.SportNewsCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Travel</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.TravelNewsCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Lifestyle</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.LifestyleCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Jobs</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.JobAlertCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Movies</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.MoviesNewsCount)</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="cat-desc">
-                        <div class="category-details">
-                            <span><a href="#">Music</a></span>
-                        </div>
-                        <div class="dots"></div>
-                        <div class="category-links">
-                            <span>(@Model.CatigoryTypeCount.MusicnewsCount)</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-}

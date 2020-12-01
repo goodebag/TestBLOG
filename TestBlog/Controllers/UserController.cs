@@ -31,46 +31,40 @@ namespace TestBlog.Controllers
         [HttpGet]
         public IActionResult UserSignUP()
         {
-            var Post = GetAllpost();
-            postDishOut Model = new postDishOut();
-            Model.Allpost = Post;
-            Model.Manypost = Post;
-            var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
+
             ViewBag.FormTitle = "User SignUp Page";
-            return View("~/Views/Admin/AdminSignUP.cshtml",Model);
+            return View("~/Views/Admin/AdminSignUP.cshtml");
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserSignUP(AdminViewModel model)
+        public async Task<IActionResult> UserSignUP(postDishOut model)
         {
 
-            if (ModelState.IsValid)
-            {
+            
                 string uniqueFileName = null;
-                if (model.Photo != null)
+                if (model.AdminViewModel.Photo != null)
                 {
 
                     string upload = hostingEnvironment.ContentRootPath;
                     var uploadsFolder = Path.Combine(upload, "wwwroot/images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.AdminViewModel.Photo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    model.AdminViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
                 // Copy data from RegisterViewModel to IdentityUser
                 var user = new myIdentityUser
                 {
                     Photophath = uniqueFileName,
-                    Fullname = (model.LastName + " " + model.FirstName),
-                    UserName = model.UserName,
-                    Email = model.Email,
+                    Fullname = (model.AdminViewModel.LastName + " " + model.AdminViewModel.FirstName),
+                    UserName = model.AdminViewModel.UserName,
+                    Email = model.AdminViewModel.Email,
                     GetUserType = UserType.User,
-                    customid = model.LastName + "-" + model.FirstName + "_"
+                    customid = model.AdminViewModel.LastName + "-" + model.AdminViewModel.FirstName + "_"
                 }; 
 
                 // Store user data in AspNetUsers database table
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.AdminViewModel.Password);
 
                 //  If user is successfully created, sign-in the user using
                 // SignInManager and redirect to index action of HomeController
@@ -82,15 +76,16 @@ namespace TestBlog.Controllers
 
                 // If there are any errors, add them to the ModelState object
                 // which will be displayed by the validation summary tag helper
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
 
-            }
+            
 
             return View(model);
         }
+
         [HttpGet]
         public IActionResult UserLogIn()
         {
@@ -104,12 +99,11 @@ namespace TestBlog.Controllers
             return View("~/Views/Admin/AdminLogIn.cshtml",Model);
         }
         [HttpPost]
-        public async Task<IActionResult> UserLogIn(LogInViewModel model)
+        public async Task<IActionResult> UserLogIn(postDishOut model)
         {
-            if (ModelState.IsValid)
-            {
+
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RemenberMe, false);
+                    model.LogInViewModel.Email, model.LogInViewModel.Password, model.LogInViewModel.RemenberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -117,7 +111,7 @@ namespace TestBlog.Controllers
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-            }
+            
 
             return View(model);
         }

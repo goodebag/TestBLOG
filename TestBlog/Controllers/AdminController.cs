@@ -35,14 +35,8 @@ namespace TestBlog.Controllers
         [HttpGet]
         public IActionResult AdminSignUP()
         {
-            var Post = GetAllpost();
-            postDishOut Model = new postDishOut();
-            Model.Allpost = Post;
-            Model.Manypost = Post;
-            var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
             ViewBag.FormTitle = "Admin SignUp Page";
-            return View(Model);
+            return View();
         
         }
 
@@ -67,15 +61,15 @@ namespace TestBlog.Controllers
                 var user = new myIdentityUser
                 {
                     Photophath = uniqueFileName,
-                    Fullname = (model.LastName + " " + model.FirstName),
-                    UserName = model.UserName,
-                    Email = model.Email,
+                    Fullname = (model.LastName.Trim() + " " + model.FirstName.Trim()),
+                    UserName = model.UserName.Trim(),
+                    Email = model.Email.Trim(),
                     GetUserType= UserType.Admin,
-                    customid= model.LastName+"-"+model.FirstName+"_"
+                    customid= model.LastName.Trim()+"-"+model.FirstName.Trim()+"_"
                 };
 
                 // Store user data in AspNetUsers database table
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password.Trim());
                 
                 //  If user is successfully created, sign-in the user using
                 // SignInManager and redirect to index action of HomeController
@@ -101,14 +95,8 @@ namespace TestBlog.Controllers
         public IActionResult AdminLogIn()
         {
             ViewBag.FormTitle = "Admin Login Page";
-            var Post = GetAllpost();
-            postDishOut Model = new postDishOut();
-            Model.Allpost = Post;
-            Model.Manypost = Post;
-            var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
           
-            return View(Model);
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> AdminLogIn(LogInViewModel model)
