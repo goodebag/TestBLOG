@@ -30,7 +30,7 @@ namespace TestBlog
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContextPool<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BlogDbConnection")));
             services.AddScoped<IBlogRepo, SqlTestRepo>();
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<myIdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

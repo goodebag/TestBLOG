@@ -15,8 +15,9 @@ namespace TestBlog.ViewModels
         public Category Discription { get; set; }
         public DateTime Date { get; set; }
         public string Headline { get; set; }
-        public IEnumerable<string> Comments { get; set; }
-        public int likes { get; set; }
+        public IList<Like> likes { get; set; }
         public int commentCount { get; set; }
+        public int LikeCount { get; set; }
+        public IList<Comment> comment { get; set; }
     }
 }

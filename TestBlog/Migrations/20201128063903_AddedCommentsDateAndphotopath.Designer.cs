@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestBlog.Data;
 
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201128063903_AddedCommentsDateAndphotopath")]
+    partial class AddedCommentsDateAndphotopath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,8 +198,6 @@ namespace TestBlog.Migrations
 
                     b.Property<string>("CommenterSphotopath");
 
-                    b.Property<DateTime>("DateAndtime");
-
                     b.Property<int>("PostId");
 
                     b.Property<string>("WhoCommented");
@@ -256,7 +256,7 @@ namespace TestBlog.Migrations
                         new
                         {
                             PostId = 1,
-                            Date = new DateTime(2020, 11, 29, 18, 2, 22, 603, DateTimeKind.Local).AddTicks(9093),
+                            Date = new DateTime(2020, 11, 28, 7, 39, 2, 622, DateTimeKind.Local).AddTicks(138),
                             Discription = 2,
                             Headline = "End Swat: Nigerians reject police unit replacing",
                             Photopath = "no to swat.jpg",

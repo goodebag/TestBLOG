@@ -1,8 +1,10 @@
-﻿@model TestBlog.ViewModels.RePost
+﻿@model TestBlog.ViewModels.postDishOut
+@inject SignInManager<TestBlog.Data.myIdentityUser> signINmanager;
+@inject UserManager<TestBlog.Data.myIdentityUser> usermanager ;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{var photo = "/images/" + Model.Photopath; }
+@{var photo = "/images/" + Model.post.Photopath; }
 
 
 <div class="blog-post">
@@ -10,14 +12,14 @@
     <div class="item-thumbs">
         <img src="@photo" alt="Slider Image">
     </div>
-    <h3 class="blog-title text-center"><a href="#">@Model.Headline</a></h3>
+    <h3 class="blog-title text-center"><a href="#">@Model.post.Headline</a></h3>
     <div class="blog-outer">
         <div class="meta">
-            <span><a href="#"><i class="fa fa-tag"></i>@Model.Discription</a></span>
-            <span class="date">@Model.Date.ToString("dd/MM/yy hh:mm")</span>
+            <span><a href="#"><i class="fa fa-tag"></i>@Model.post.Discription</a></span>
+            <span class="date">@Model.post.Date.ToString("dd/MM/yy hh:mm")</span>
 
         </div>
-        <h3 class="blog-text"><a>@Model.postWriteUp</a></h3>
+        <h3 class="blog-text"><a>@Model.post.postWriteUp</a></h3>
         <div class="admin-text">
             <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
             <i>By <a href="#">Ruaha Admin</a></i>
@@ -25,21 +27,186 @@
     </div>
     <div class="blog-text">
         <div class="meta position-absolute">
-            <span><a asp-action="SaveLike" asp-controller="Home" asp-route-id="@Model.PostId" data-toggle="tooltip" title="" data-original-title="@Model.likes" class="like-icons"><i class="fa fa-thumbs-up fa-3x"></i></a></span>
-            <span><a href="#" data-toggle="tooltip" title="" data-original-title="@Model.Comments.Count()" class="comments-icon"><i class="fa fa-comments-o fa-3x"></i></a></span>
+            <span><a asp-action="SaveLike" asp-controller="Home" asp-route-id="@Model.post.PostId" data-toggle="tooltip" title="" data-original-title="@Model.post.LikeCount" class="like-icons"><i class="fa fa-thumbs-up fa-3x"></i></a></span>
+            @if (Model.post.comment != null)
+            {
+                <span>
+                    <a href="#" data-toggle="tooltip" title="" data-original-title="@Model.post.comment.Count() " class="comments-icon"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+                </span>
+            }
+            else
+            {
+                <a href="#" data-toggle="tooltip" title="" data-original-title="0" class="comments-icon"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+
+            }
         </div>
     </div>
-    <div class="blog-bottom">
-        <div class="pull-left ">
-            <form asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.PostId" method="post">
-                <div class="pull-left">
-                    <textarea name="Comment" id="Comment" style="font-family:sans-serif;font-size:1.2em; width:500px" placeholder=" Hey... Wanna say something? "></textarea><input type="submit" value="Comment" class="more-links position-absolute">
-                </div>
-            </form>
-        </div>
 
-        <div class="pull-right"><a asp-action="Index" asp-controller="Home" class="more-links">Back to Home</a></div>
-        <div class="clearfix"></div>
+    @if (Model.post.comment != null)
+    {
+        foreach (var comment in Model.post.comment)
+        {
+
+<div class=" blog-text  more-links" style="margin-top-0; height:60px;width:700px;border:1px dashed #000000;font:16px/26px Georgia, Garamond, Serif;overflow:hidden;">
+    @{
+        var picture = "/images/" + comment.CommenterSphotopath;
+    }
+    <div>
+        <p><img src="@picture" alt="" class="img-circle" style="float:left"></p>
+    </div>
+    <div>
+        <p>@comment.WhoCommented</p>
+        <div>
+            @comment.comments
+        </div>
+        <p>@comment.DateAndtime</p>
     </div>
 </div>
+         }
+       }
+            
+            <div class="blog-bottom">
+                <div class="pull-left ">
+                    <form asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.post.PostId" method="post">
+                        <div class="pull-left">
+                            <textarea name="Comment" id="Comment" style="font-family:sans-serif;font-size:1.2em; width:500px" placeholder=" Hey... Wanna say something? "></textarea><input type="submit" value="Comment" class="more-links position-absolute">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="pull-right"><a asp-action="Index" asp-controller="Home" class="more-links">Back to Home</a></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+@section RecentPost{
+    <div class="widgets-box">
+        <div class="sidebar-head bg-2"><span>Recent Posts</span></div>
+        <div class="sidebar-text">
+            <ul class="sidebar-post">
+                @{ 
+                    int count = 1;
+                }
+                @foreach (var post in Model.Allpost)
+                {
+                    
+
+                    if (count == 3)
+                    {
+                        break;
+                    }
+
+                    var photop = "/images/" + post.Photopath;
+                    <li>
+                        <div class="image-thumb">
+                            <a href="#"><img src="@photop" alt=""></a>
+                        </div>
+                        <div class="post-text">
+                            <h4><a href="#">@post.Headline</a></h4>
+                            <p>@post.postWriteUp</p>
+                            <div class="post-date">
+                                <i class="fa fa-clock-o"></i>@post.Date
+                            </div>
+                            <div class="post-date">
+                                <a href="#"><i class="fa fa-comments-o"></i>@post.commentCount</a>
+                            </div>
+                        </div>
+                    </li>
+                    count +=1;
+                }
+
+
+            </ul>
+        </div>
+    </div>
+}
+@section Categories{
+    <div class="widgets-box">
+        <div class="sidebar-head"><span>Categories</span></div>
+        <div class="sidebar-text">
+            <ul class="category">
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Entertainment</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.EntertainmentCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Sports</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.SportNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Travel</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.TravelNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Lifestyle</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.LifestyleCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Jobs</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.JobAlertCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Movies</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.MoviesNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Music</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.MusicnewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+}
+
+
 

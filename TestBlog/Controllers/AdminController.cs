@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TestBlog.Data;
@@ -12,39 +14,69 @@ namespace TestBlog.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<myIdentityUser> _userManager;
+        private readonly SignInManager<myIdentityUser> _signInManager;
+        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IBlogRepo _blogRepository;
 
-        public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AdminController(UserManager<myIdentityUser> userManager, SignInManager<myIdentityUser> signInManager,
+            IHostingEnvironment hostingEnvironment, IBlogRepo blogRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.hostingEnvironment = hostingEnvironment;
+            this._blogRepository = blogRepository;
+        }
+        public IActionResult Index()
+        {
+            return View();
         }
 
         [HttpGet]
         public IActionResult AdminSignUP()
         {
-            return View();
+            var Post = GetAllpost();
+            postDishOut Model = new postDishOut();
+            Model.Allpost = Post;
+            Model.Manypost = Post;
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+            ViewBag.FormTitle = "Admin SignUp Page";
+            return View(Model);
+        
         }
 
         [HttpPost]
         public async Task<IActionResult> AdminSignUP(AdminViewModel model)
         {
-
+            
             if (ModelState.IsValid)
             {
-                // Copy data from RegisterViewModel to IdentityUser
-                var user = new IdentityUser
+                string uniqueFileName = null;
+                if (model.Photo != null)
                 {
+                   
+                    string upload = hostingEnvironment.ContentRootPath;
+                    var uploadsFolder = Path.Combine(upload, "wwwroot/images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    UserName = model.Email,
+                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+                // Copy data from RegisterViewModel to IdentityUser
+                var user = new myIdentityUser
+                {
+                    Photophath = uniqueFileName,
+                    Fullname = (model.LastName + " " + model.FirstName),
+                    UserName = model.UserName,
                     Email = model.Email,
-
+                    GetUserType= UserType.Admin,
+                    customid= model.LastName+"-"+model.FirstName+"_"
                 };
 
                 // Store user data in AspNetUsers database table
                 var result = await _userManager.CreateAsync(user, model.Password);
-
+                
                 //  If user is successfully created, sign-in the user using
                 // SignInManager and redirect to index action of HomeController
                 if (result.Succeeded)
@@ -68,7 +100,15 @@ namespace TestBlog.Controllers
         [HttpGet]
         public IActionResult AdminLogIn()
         {
-            return View();
+            ViewBag.FormTitle = "Admin Login Page";
+            var Post = GetAllpost();
+            postDishOut Model = new postDishOut();
+            Model.Allpost = Post;
+            Model.Manypost = Post;
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+          
+            return View(Model);
         }
         [HttpPost]
         public async Task<IActionResult> AdminLogIn(LogInViewModel model)
@@ -76,7 +116,7 @@ namespace TestBlog.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RemenberMe, false);
+                    model.Email.Trim(), model.Password.Trim(), model.RemenberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -93,6 +133,26 @@ namespace TestBlog.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IEnumerable<RePost> GetAllpost()
+        {
+            List<RePost> rePosts = new List<RePost>();
+            var NewsUpdate = _blogRepository.GetALLpost();
+            foreach (var post in NewsUpdate)
+            {
+                var postToUse = new RePost();
+                postToUse.Date = post.Date;
+                postToUse.Discription = post.Discription;
+                postToUse.Headline = post.Headline;
+                postToUse.Photopath = post.Photopath;
+                postToUse.PostId = post.PostId;
+                postToUse.postWriteUp = post.postWriteUp;
+                rePosts.Add(postToUse);
+            }
+            var OurPost = _blogRepository.addLikes(rePosts);
+            var Post = _blogRepository.AddComents(OurPost);
+            return Post;
         }
     }
 }

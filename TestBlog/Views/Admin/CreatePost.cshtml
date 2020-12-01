@@ -1,46 +1,46 @@
-﻿@model TestBlog.ViewModels.postViewModel
+﻿@model TestBlog.ViewModels.postDishOut
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="sidebar-head"><span>Create post</span></div>
 
-<div >
-    
+<div>
+
     <div class="text-sm-center">
         <form enctype="multipart/form-data" asp-action="CreatePost" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Headline" class="control-label"></label>
-                <input asp-for="Headline" class="form-control" />
-                <span asp-validation-for="Headline" class="text-danger"></span>
+                <label asp-for="postViewModel.Headline" class="control-label"></label>
+                <input asp-for="postViewModel.Headline" class="form-control" />
+                <span asp-validation-for="postViewModel.Headline" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="postWriteUp" class="control-label"></label>
-                <input asp-for="postWriteUp" class="form-control" />
-                <span asp-validation-for="postWriteUp" class="text-danger"></span>
+                <label asp-for="postViewModel.postWriteUp" class="control-label"></label>
+                <input asp-for="postViewModel.postWriteUp" class="form-control" />
+                <span asp-validation-for="postViewModel.postWriteUp" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <label asp-for="postViewModel.Date" class="control-label"></label>
+                <input asp-for="postViewModel.Date" class="form-control" />
+                <span asp-validation-for="postViewModel.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="custom-file">
-                    <label asp-for="Photo" class="control-label"></label>
-                    <input asp-for="Photo" type="file" class="form-control custom-file-input" style="opacity: 1">
-                    <span asp-validation-for="Photo" class="text-danger"></span>
+                    <label asp-for="postViewModel.Photo" class="control-label"></label>
+                    <input asp-for="postViewModel.Photo" type="file" class="form-control custom-file-input" style="opacity: 1">
+                    <span asp-validation-for="postViewModel.Photo" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <select asp-for="Description" class="custom-select mr-sm-2" placeholder="choose"
+                <label asp-for="postViewModel.Description" class="control-label"></label>
+                <select asp-for="postViewModel.Description" class="custom-select mr-sm-2" placeholder="choose"
                         asp-items="Html.GetEnumSelectList<TestBlog.Models.Category>()">
                     <option> value="Please Select"</option>
                 </select>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <span asp-validation-for="postViewModel.Description" class="text-danger"></span>
             </div>
             <div class="form-group text-sm-center">
 
@@ -65,5 +65,132 @@
         </form>
     </div>
 </div>
+
+@section RecentPost{
+    <div class="widgets-box">
+        <div class="sidebar-head bg-2"><span>Recent Posts</span></div>
+        <div class="sidebar-text">
+            <ul class="sidebar-post">
+                @{int count = 1; }
+                @foreach (var post in Model.Allpost)
+                {
+
+                    if (count == 3)
+                    {
+                        break;
+                    }
+
+                    var photo = "/images/" + post.Photopath;
+                    <li>
+                        <div class="image-thumb">
+                            <a href="#"><img src="@photo" alt=""></a>
+                        </div>
+                        <div class="post-text">
+                            <h4><a href="#">@post.Headline</a></h4>
+                            <p>@post.postWriteUp</p>
+                            <div class="post-date">
+                                <i class="fa fa-clock-o"></i>@post.Date
+                            </div>
+                            <div class="post-date">
+                                <a href="#"><i class="fa fa-comments-o"></i>@post.commentCount</a>
+                            </div>
+                        </div>
+                    </li>
+                    count +=1;
+
+                }
+
+
+            </ul>
+        </div>
+    </div>
+}
+@section Categories{
+    <div class="widgets-box">
+        <div class="sidebar-head"><span>Categories</span></div>
+        <div class="sidebar-text">
+            <ul class="category">
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Entertainment</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.EntertainmentCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Sports</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.SportNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Travel</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.TravelNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Lifestyle</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.LifestyleCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Jobs</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.JobAlertCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Movies</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.MoviesNewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cat-desc">
+                        <div class="category-details">
+                            <span><a href="#">Music</a></span>
+                        </div>
+                        <div class="dots"></div>
+                        <div class="category-links">
+                            <span>(@Model.CatigoryTypeCount.MusicnewsCount)</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+}
 
 

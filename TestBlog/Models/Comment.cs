@@ -12,6 +12,10 @@ namespace TestBlog.Models
         public string comments { get; set; }
         public int PostId { get; set; }
         public Post posts { get; set; }
+        public string WhoCommented { get; set; }
+       public DateTime DateAndtime { get; set; }
+        public string CommenterSphotopath { get; set; }
+
 
     }
 }

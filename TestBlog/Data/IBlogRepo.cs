@@ -17,9 +17,14 @@ namespace TestBlog.Data
         Post Editpost(Post PostUpdate);
         int getpostcount();
         Post GetPost(int Id);
-        int SaveLike(int postToLike);
+        RePost addLike(RePost postToAddLike);
+        void Removelike(int postid, string userNAME);
+        Like SaveLike(Like likeToLike);
+        IEnumerable<RePost> addLikes(IEnumerable<RePost> postToAddLikes);
         Comment SaveComent(Comment comment);
         IEnumerable<RePost> AddComents(IEnumerable<RePost> post);
        RePost AddComent(RePost post);
+        bool likedBefore(int postid,string userNAME);
+        PostTypeCount TypeCount();
     }
 }

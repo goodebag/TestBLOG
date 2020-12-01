@@ -8,7 +8,7 @@ using TestBlog.Models;
 
 namespace TestBlog.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<myIdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

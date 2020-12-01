@@ -1,0 +1,218 @@
+﻿@inject SignInManager<TestBlog.Data.myIdentityUser > signINmanager;
+@inject UserManager<TestBlog.Data.myIdentityUser> usermanager ;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> NewsLane : Home of Infomation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- xxx Favicons xxx -->
+    <!-- xxx Base Stylesheet xxx -->
+    <script src="js/modernizr-2.6.2.min.js"></script>
+
+    <link rel="stylesheet" media="screen" href="/css/base.css" />
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <body class="wide">
+
+        <!-- xxx Loader Start xxx -->
+        <div id="pageloader">
+            <div class="loader-item">
+                <img src="/images/preloader.gif" alt='loader' />
+                <div>Loading...</div>
+            </div>
+        </div>
+    </body>
+    <!-- xxx End xxx -->
+    <!-- xxx Header Start xxx -->
+    <header>
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        A Bright Sunny Day Or Some Line Of Text
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="social-icons">
+                            <ul>
+                                <li><a href="#" data-toggle="tooltip" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" title="" data-original-title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" title="" data-original-title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+                                <li>
+                                    <div class="box-search">
+                                        <input class="search-input" type="search" placeholder="Search" />
+                                        <div class="icon"></div>
+                                    </div>
+                                    <a href="#" class="icon"><i class="fa fa-search"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="nav-wrap">
+            <div class="container">
+                <div id="menuzord" class="menuzord red pull-left">
+                    <a href="javascript:void(0)" class="menuzord-brand"><img src="/images/logo.png" alt="Ruaha Logo"></a>
+                    <ul class="menuzord-menu">
+                        <li><a href="/">Home</a></li>
+                        <li>
+                            <a href="#">news</a>
+                            <ul class="dropdown">
+                                <li><a href="/home/GetPostByDiscription/2">Sports</a></li>
+                                <li><a href="/home/GetPostByDiscription/1">Entertainment</a></li>
+                                <li><a href="/home/GetPostByDiscription/3">Travels</a></li>
+                                <li><a href="/home/GetPostByDiscription/4">LifeStyle</a></li>
+                                <li><a href="/home/GetPostByDiscription/5">Jobs</a></li>
+                                <li><a href="/home/GetPostByDiscription/6">Movies</a></li>
+                                <li><a href="/home/GetPostByDiscription/7">Music</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Contact Us</a>
+                            <ul class="dropdown">
+                                <li><a href="">Egbule.goodluck@gmail</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li>
+                            <a>
+                                <div class="search-container">
+                                    <form asp-controller="Home" asp-action="GetPostByHeadline" method="post">
+                                        <input type="text" placeholder="Search" name="HeadLine" style="width:70px;">
+                                        <button type="submit" style="width:30px;height:30px"><i class="fa fa-search"></i></button>
+                                    </form>
+                                </div>
+                            </a>
+                        </li>
+                        @if (signINmanager.IsSignedIn(User))
+                        {
+
+                            <li>
+
+                                @{
+                                    var myUser = await usermanager.GetUserAsync(User);
+                                }
+
+                                <a class="admin-text">
+                                    @{
+                                        var photo = "/images/" + myUser.Photophath;
+                                    }
+                                    <p><img src="@photo" alt="" class="img-circle" style="height:40px;width:40px"></p>
+                            <li><a>LOGOUT<a class="dropdown" asp-action="LogOutUser" asp-controller="User">@myUser.Fullname</a> </a></li>
+
+                            </li>
+                        }
+                        @if (signINmanager.IsSignedIn(User))
+                        {
+                            var myUser = await usermanager.GetUserAsync(User);
+                            if (myUser.GetUserType.Equals(1))
+                            {
+                                <li><a asp-action="Create" asp-controller="Home">Post News</a></li>
+                            }
+
+                        }
+
+                        else
+                        {
+                            <li>
+                                <a href="#">Admin</a>
+                                <ul class="dropdown">
+                                    <li><a asp-action="AdminLogIn" asp-controller="Admin">Login</a></li>
+                                    <li><a asp-action="AdminSignUP" asp-controller="Admin">SignUp</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Account</a>
+                                <ul class="dropdown">
+                                    <li><a asp-action="UserLogIn" asp-controller="User">Login</a></li>
+                                    <li><a asp-action="UserSignUP" asp-controller="User">SignUp</a></li>
+                                </ul>
+                            </li>
+                        }
+                        <li><a asp-action="Index" asp-controller="Admin">New veiw</a></li>
+                    </ul>
+
+
+
+</div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </header>
+
+    <!-- xxx Header End xxx -->
+
+
+    <div class="col-sm-12"style="float:unset">
+            <main role="main">
+                @RenderBody()
+            </main>
+    </div>
+
+    @if (IsSectionDefined("Scripts"))
+    {
+@RenderSection("Scripts", required: false)}
+    <!-- xxx Footer End xxx -->
+    <!-- xxx Back To Top xxx -->
+    <div id="back-top">
+        <a class="/img-circle" href="#top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+    </div>
+    <footer>
+        <div class="footer-inner menuzord red " style="left: 0;
+                                      bottom: 0;
+                                      width: 100%;
+                                      background-color: red;
+                                      color: white;">
+            <div class="copyright">
+                <p class="text-center">© 2020 - All Rights Reserved.|&copy 2020 - NewsLane INC </p>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <!-- xxx End xxx -->
+    <!-- xxx Footer xxx -->
+    <!-- xxx Footer End xxx -->
+    <!-- xxx Style Switcher (Only For Demo) xxx -->
+    <!-- JQuery Plugins-->
+    <script type="text/javascript" src="/js/jquery-min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="/js/menuzord.js"></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/owl.carousel.min.js"></script>
+    <script type='text/javascript' src="/js/jflickrfeed.min.js"></script>
+    <script type='text/javascript' src="/js/jquery.fancybox.js"></script>
+    <script type='text/javascript' src="/js/jquery.validate.min.js"></script>
+    <script type='text/javascript' src="/twitter/jquery.tweet.js"></script>
+
+    <!-- JQuery Map Plugin -->
+
+    <script type="text/javascript" src="/js/jquery.gmap.min.js"></script>
+
+    <script type='text/javascript' src="/js/site-custom.js"></script>
+
+</body>
+</html>
+

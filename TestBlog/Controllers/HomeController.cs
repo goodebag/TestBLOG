@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using TestBlog.Data;
@@ -28,27 +29,17 @@ namespace TestBlog.Controllers
         [HttpGet("/")]
         public ViewResult Index()
         {
-            List<RePost> rePosts = new List<RePost>();
-            var NewsUpdate = _blogRepository.GetALLpost();
-            foreach (var post in NewsUpdate)
-            {
-                var postToUse = new RePost();
-                postToUse.Date = post.Date;
-                postToUse.Discription = post.Discription;
-                postToUse.Headline = post.Headline;
-                postToUse.Photopath = post.Photopath;
-                postToUse.PostId = post.PostId;
-                postToUse.postWriteUp = post.postWriteUp;
-                //postToUse.likes = post.LIKE;
-                rePosts.Add(postToUse);
-            }
-          //var  OurPost = _blogRepository.AddComents(rePosts);
-            return View(rePosts);
+            var Post = GetAllpost();
+            postDishOut Model = new postDishOut();
+            Model.Allpost = Post;
+            Model.Manypost = Post;
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+            return View(Model);
         }
 
         // GET: HomeController
         [HttpGet("/Home/Details/")]
-
         public IActionResult Details(int Id)
         {
             var post = _blogRepository.GetPost(Id);
@@ -59,12 +50,19 @@ namespace TestBlog.Controllers
             postToUse.Photopath = post.Photopath;
             postToUse.PostId = post.PostId;
             postToUse.postWriteUp = post.postWriteUp;
-           // postToUse.likes = post.LIKE;
-           //var YourNews =_blogRepository.AddComent(postToUse);
-            return View(postToUse);
+            var OurPost = _blogRepository.addLike(postToUse);
+            var Post = _blogRepository.AddComent(OurPost);
+            postDishOut Model = new postDishOut();
+            Model.post = Post;
+            var all = GetAllpost();
+            Model.Allpost = all;
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+            return View(Model);
         }
 
         // GET: HomeController/Create
+        [Authorize]
         public ViewResult Create()
         {
             postViewModel PostVM = new postViewModel();
@@ -104,15 +102,35 @@ namespace TestBlog.Controllers
             return View("~/Views/Admin/CreatePost.cshtml");
         }
 
-        // GET: HomeController/Edit/5
         [HttpGet("/home/GetPostByDiscription/{description}")]
         public IActionResult GetPostByDiscription(int description)
         {
             var posts = _blogRepository.GetByDiscription((Category)description);
-            return View("Index", posts);
+            List<RePost> rePosts = new List<RePost>();
+            foreach (var post in posts)
+            {
+                var postToUse = new RePost();
+                postToUse.Date = post.Date;
+                postToUse.Discription = post.Discription;
+                postToUse.Headline = post.Headline;
+                postToUse.Photopath = post.Photopath;
+                postToUse.PostId = post.PostId;
+                postToUse.postWriteUp = post.postWriteUp;
+                rePosts.Add(postToUse);
+            }
+            var OurPost = _blogRepository.addLikes(rePosts);
+            var Post = _blogRepository.AddComents(OurPost);
+            postDishOut Model = new postDishOut();
+            Model.Manypost = Post;
+            var all = GetAllpost();
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+            Model.Allpost = all;
+            return View("Index", Model);
         }
 
         // GET: HomeController/Delete/5
+        [Authorize]
         public ActionResult Delete(int Id)
         {
             _blogRepository.Deletepost(Id);
@@ -123,9 +141,29 @@ namespace TestBlog.Controllers
         {
 
             var TrimedHeadline = HeadLine.Trim();
-            IEnumerable<Post> post = _blogRepository.GetPostByHeadline(TrimedHeadline);
+            IEnumerable<Post> posts = _blogRepository.GetPostByHeadline(TrimedHeadline);
+            List<RePost> rePosts = new List<RePost>();
+            foreach (var post in posts)
+            {
+                var postToUse = new RePost();
+                postToUse.Date = post.Date;
+                postToUse.Discription = post.Discription;
+                postToUse.Headline = post.Headline;
+                postToUse.Photopath = post.Photopath;
+                postToUse.PostId = post.PostId;
+                postToUse.postWriteUp = post.postWriteUp;
+                rePosts.Add(postToUse);
+            }
+            var OurPost = _blogRepository.addLikes(rePosts);
+            var Post = _blogRepository.AddComents(OurPost);
+            postDishOut Model = new postDishOut();
+            Model.Manypost = Post;
+            var typcount = _blogRepository.TypeCount();
+            Model.CatigoryTypeCount = typcount;
+            var all = GetAllpost();
+            Model.Allpost = all;
+            return View("Index", Model);
 
-            return View("Index", post);
         }
 
 
@@ -136,21 +174,51 @@ namespace TestBlog.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddComment(string Comment, int id)
+        [Authorize]
+        public IActionResult AddComment(string Comment, int id,string Commenter)
         {
             var comment = new Comment()
             {
                 PostId = id,
                 comments = Comment,
+                WhoCommented =Commenter
             };
             _blogRepository.SaveComent(comment);
             return RedirectToAction("index");
         }
-
-        public IActionResult SaveLike(int id)
+        [Authorize]
+        public IActionResult SaveLike(int id,string likedBy )
         {
-            _blogRepository.SaveLike(id);
-            return RedirectToAction("index");
+            var Liked = _blogRepository.likedBefore(id, likedBy);
+            if (Liked.Equals(false))
+            {
+                var likeTosave = new Like { Postid = id, WhoLiked = likedBy };
+                _blogRepository.SaveLike(likeTosave);
+                return RedirectToAction("index");
+            }
+            else
+                _blogRepository.Removelike(id, likedBy);
+            return RedirectToAction("Index");
+       
+        }
+        public IEnumerable<RePost> GetAllpost()
+        {
+            List<RePost> rePosts = new List<RePost>();
+            var NewsUpdate = _blogRepository.GetALLpost();
+            foreach (var post in NewsUpdate)
+            {
+                var postToUse = new RePost();
+                postToUse.Date = post.Date;
+                postToUse.Discription = post.Discription;
+                postToUse.Headline = post.Headline;
+                postToUse.Photopath = post.Photopath;
+                postToUse.PostId = post.PostId;
+                postToUse.postWriteUp = post.postWriteUp;
+                rePosts.Add(postToUse);
+            }
+            var OurPost = _blogRepository.addLikes(rePosts);
+            var Post = _blogRepository.AddComents(OurPost);
+            return Post;
         }
     }
 }
