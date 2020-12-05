@@ -1,5 +1,6 @@
 ﻿@model TestBlog.ViewModels.postDishOut
 @inject SignInManager<TestBlog.Data.myIdentityUser> signINmanager;
+@inject UserManager<TestBlog.Data.myIdentityUser> userManager;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,6 +8,7 @@
 {
 
     var photo = "/images/" + post.Photopath;
+    var postersphoto = "/images/" + post.PostersPhotopath;
     <div class="blog-post">
 
 
@@ -24,8 +26,8 @@
             </div>
             <h3 class="blog-text"><a asp-action="Details" asp-controller="Home" asp-route-id="@post.PostId">@post.postWriteUp</a></h3>
             <div class="admin-text">
-                <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
-                <i>By <a href="#">Ruaha Admin</a></i>
+                <p><img src="@postersphoto" alt="images/author-thumb.jpg" class="img-circle" style="height:40px;width:40px"></p>
+                <i>By <a href="#">@post.PosterName</a></i>
             </div>
         </div>
         <div class="blog-text">
@@ -34,9 +36,23 @@
                 @if (signINmanager.IsSignedIn(User))
                 {
                     <span>
-                        <a asp-action="SaveLike" asp-controller="Home" asp-route-id="@post.PostId" asp-route-likedBy="@User.Identity.Name"
+                        @{
+                            var myUser = await userManager.GetUserAsync(User);
+                        }
+                        <a asp-action="SaveLike" asp-controller="Home" asp-route-id="@post.PostId" asp-route-likedBy="@myUser.Fullname"
                            data-toggle="tooltip" title="" data-original-title="@post.LikeCount" class="like-icons"><i class="fa fa-thumbs-up fa-3x "></i></a>
                     </span>
+                    @if (post.comment != null)
+                    {
+                        <span>
+                            <a href="#" data-toggle="tooltip" title="" data-original-title="@post.commentCount " class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+                        </span>
+                    }
+                    else
+                    {
+                        <a href="#" data-toggle="tooltip" title="" data-original-title="0" class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+
+                    }
                 }
 
                 else
@@ -45,19 +61,20 @@
                         <a data-toggle="tooltip" title="" data-original-title="@post.LikeCount" class="like-icons"><i class="fa fa-thumbs-up fa-3x "></i></a>
                         <a></a>
                     </span>
+                    @if (post.comment != null)
+                    {
+                        <span>
+                            <a href="#" data-toggle="tooltip" title="" data-original-title="@post.commentCount " class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+                        </span>
+                    }
+                    else
+                    {
+                        <a href="#" data-toggle="tooltip" title="" data-original-title="0" class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
+
+                    }
                 }
 
-                @if (post.comment != null)
-                {
-                    <span>
-                        <a href="#" data-toggle="tooltip" title="" data-original-title="@post.commentCount " class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
-                    </span>
-                }
-                else
-                {
-                    <a href="#" data-toggle="tooltip" title="" data-original-title="0" class="comments-icon bounce"><i class="fa fa-comments-o fa-3x more-links"></i></a>
 
-                }
             </div>
 
         </div>
@@ -65,21 +82,25 @@
         <div class="blog-bottom">
             <div class="text-danger">Recent Comments  :</div>
 
-            <div class="position-absolute  more-links" style="margin-top-0; height:60px;width:700px;border:1px dashed #000000;font:16px/26px Georgia, Garamond, Serif;overflow:scroll;">
+            <div class="position-absolute  more-links" style="margin-top-0; height:120px;width:700px;border:hidden;font:16px/26px Georgia, Garamond, Serif;overflow:scroll;">
                 @if (post.comment != null)
                 {
                     foreach (var comment in post.comment)
                     {
                         var picture = "/images/" + comment.CommenterSphotopath;
                         <div>
-                            <p><img src="@picture" alt="" class="img-circle" style="float:left"></p>
-                        </div>
-                        <div>
-                            <p>@comment.WhoCommented</p>
                             <div>
-                                @comment.comments
+                                <p><img src="@picture" alt="" class="img-circle" style="float: left; height:30px; width: 40px"></p>
                             </div>
-                            <p>@comment.DateAndtime</p>
+                            <div>
+                                <p>@comment.WhoCommented</p>
+                                <div>
+                                    @comment.comments
+                                </div>
+                                <div class="post-date">
+                                    <i class="fa fa-clock-o"></i>@comment.DateAndtime
+                                </div>
+                            </div>
                         </div>
                     }
                 }
@@ -119,7 +140,6 @@
                             </div>
                         </div>
                     </li>
-                    count  +=1;
 
                 }
 
@@ -214,4 +234,50 @@
         </div>
     </div>
 
+}
+@section CripytoPrices{
+div class="col-sm-4">
+<!-- xxx Widet Box xxx -->
+<div class="widgets-box">
+    <div class="sidebar-head"><span>Current prices</span></div>
+    <div class="sidebar-text" style="overflow:scroll">
+
+
+        <body class="light-blue darken-1">
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Coin</th>
+                    <th>Price</th>
+                    <th>Total Volume</th>
+                    <th>Market Cap</th>
+                </tr>
+                @{ 
+                    var COUNT = 1;
+                }
+                @foreach (var coin in Model.Cryptos)
+                {
+                    if (COUNT.Equals(11))
+                    {
+                        break;
+                    }
+                    <tr>
+                        <td>@coin.market_cap_rank</td>
+                        <td>@coin.name </td>
+                        <td>USD @coin.current_price</td>
+                        <td>@coin.total_volume</td>
+                        <td>@coin.market_cap</td>
+
+                    </tr>
+                    COUNT += 1;
+                }
+
+            </table>
+
+
+        </body>
+
+
+    </div>
+</div>
 }

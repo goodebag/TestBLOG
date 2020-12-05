@@ -47,7 +47,7 @@ namespace TestBlog.Data
         {
             IEnumerable<Post> query = context.Posts.Where(POST => POST.Discription == discription);
 
-            return query;
+            return query.OrderByDescending(e => e.Date);
         }
 
         public Post GetPost(int Id)
@@ -96,7 +96,8 @@ namespace TestBlog.Data
                     var comments = context.Comments.Where(e => e.PostId == post.PostId).ToList();
                     post.commentCount = comments.Count;
                     post.comment = new List<Comment>();
-                    foreach (var cmmt in comments)
+                    var sorted = comments.OrderByDescending(e => e.DateAndtime);
+                    foreach (var cmmt in sorted)
                     {
                         post.comment.Add(cmmt);
                        // post.comment = new Comment[] { cmmt };
@@ -118,7 +119,8 @@ namespace TestBlog.Data
                 var comments = context.Comments.Where(e => e.PostId == post.PostId).ToList();
                 post.commentCount = comments.Count;
                 post.comment = new List<Comment>();
-                foreach (var cmmt in comments)
+                var sorted = comments.OrderByDescending(e => e.DateAndtime);
+                foreach (var cmmt in sorted)
                 {
                     post.comment.Add(cmmt);
                     // post.comment = new Comment[] { cmmt };
@@ -167,14 +169,20 @@ namespace TestBlog.Data
         {
             var liked = new bool();
             var use = context.GetLikes.Where(e => e.Postid == postid).ToList();
-       
-            if (use.Where(e=>e.WhoLiked == userNAME).Equals(null))
+            if (use.Count.Equals(0))
             {
                 liked = false;
             }
             else
             {
-                liked = true;
+                if (use.FirstOrDefault(e => e.WhoLiked == userNAME).Equals(null))
+                {
+                    liked = false;
+                }
+                else
+                {
+                    liked = true;
+                }
             }
             return liked;
         }

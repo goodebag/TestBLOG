@@ -4,7 +4,10 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{var photo = "/images/" + Model.post.Photopath; }
+@{var photo = "/images/" + Model.post.Photopath;
+    var postersphoto = "/images/" +Model.post.PostersPhotopath;
+    var Who = await usermanager.GetUserAsync(User);
+    }
 
 
 <div class="blog-post">
@@ -21,8 +24,8 @@
         </div>
         <h3 class="blog-text"><a>@Model.post.postWriteUp</a></h3>
         <div class="admin-text">
-            <p><img src="images/author-thumb.jpg" alt="" class="img-circle"></p>
-            <i>By <a href="#">Ruaha Admin</a></i>
+            <p><img src="@postersphoto" alt="images/author-thumb.jpg" class="img-circle" style="height:40px;width:40px"></p>
+            <i>By <a href="#">@Model.post.PosterName</a></i>
         </div>
     </div>
     <div class="blog-text">
@@ -47,19 +50,22 @@
         foreach (var comment in Model.post.comment)
         {
 
-<div class=" blog-text  more-links" style="margin-top-0; height:60px;width:700px;border:1px dashed #000000;font:16px/26px Georgia, Garamond, Serif;overflow:hidden;">
+<div class="position-absolute  more-links" style="margin-top-0; height:120px;width:700px;border:1px dashed #000000;font:16px/26px Georgia, Garamond, Serif;overflow:scroll;">
     @{
         var picture = "/images/" + comment.CommenterSphotopath;
     }
     <div>
-        <p><img src="@picture" alt="" class="img-circle" style="float:left"></p>
+        <p><img src="@picture" alt="" class="img-circle" style="float:left; height:30px;width:40px"></p>
     </div>
     <div>
         <p>@comment.WhoCommented</p>
         <div>
             @comment.comments
         </div>
-        <p>@comment.DateAndtime</p>
+        <div class="post-date">
+            <i class="fa fa-clock-o"></i>@comment.DateAndtime
+        </div>
+
     </div>
 </div>
          }
@@ -67,7 +73,7 @@
             
             <div class="blog-bottom">
                 <div class="pull-left ">
-                    <form asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.post.PostId" method="post">
+                    <form asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.post.PostId" asp-route-Commenter="@Who.Fullname" asp-route-CommenterPhoto="@Who.Photophath" method="post">
                         <div class="pull-left">
                             <textarea name="Comment" id="Comment" style="font-family:sans-serif;font-size:1.2em; width:500px" placeholder=" Hey... Wanna say something? "></textarea><input type="submit" value="Comment" class="more-links position-absolute">
                         </div>

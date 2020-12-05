@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestBlog.Models;
+using TestBlog.Models.CoinMarketCap;
 
 namespace TestBlog.ViewModels
 {
@@ -15,5 +16,6 @@ namespace TestBlog.ViewModels
         public LogInViewModel LogInViewModel { get; set; }
         public postViewModel postViewModel  { get; set; }
         public PostTypeCount CatigoryTypeCount { get; set; }
+        public IEnumerable<CryptoMarketResponse> Cryptos { get; set; }
     }
 }

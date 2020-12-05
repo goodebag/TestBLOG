@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using TestBlog.Data;
 using TestBlog.Models;
+using TestBlog.Models.CoinMarketCap;
 using TestBlog.ViewModels;
 
 namespace TestBlog.Controllers
@@ -27,7 +28,7 @@ namespace TestBlog.Controllers
         }
         // GET: HomeController
         [HttpGet("/")]
-        public ViewResult Index()
+        public async Task<ViewResult> Index()
         {
             var Post = GetAllpost();
             postDishOut Model = new postDishOut();
@@ -35,6 +36,9 @@ namespace TestBlog.Controllers
             Model.Manypost = Post;
             var typcount = _blogRepository.TypeCount();
             Model.CatigoryTypeCount = typcount;
+            CoinProcessor processor = new CoinProcessor();
+            var coinAndPrices = await processor.LoadCoins();
+            Model.Cryptos = (IEnumerable<CryptoMarketResponse>)coinAndPrices;
             return View(Model);
         }
 
@@ -49,6 +53,8 @@ namespace TestBlog.Controllers
             postToUse.Headline = post.Headline;
             postToUse.Photopath = post.Photopath;
             postToUse.PostId = post.PostId;
+            postToUse.PosterName = post.WhoPosted;
+            postToUse.PostersPhotopath = post.PosterPhotopath;
             postToUse.postWriteUp = post.postWriteUp;
             var OurPost = _blogRepository.addLike(postToUse);
             var Post = _blogRepository.AddComent(OurPost);
@@ -89,7 +95,9 @@ namespace TestBlog.Controllers
                 }
 
                 newpost.Headline = model.Headline;
-                newpost.Date = DateTime.Now;
+                newpost.Date = model.Date;
+                newpost.WhoPosted = model.whoIsPosting;
+                newpost.PosterPhotopath = model.Photopath;
                 newpost.Discription = model.Description;
                 newpost.postWriteUp = model.postWriteUp;
                 newpost.Photopath = uniqueFileName;
@@ -116,6 +124,8 @@ namespace TestBlog.Controllers
                 postToUse.Photopath = post.Photopath;
                 postToUse.PostId = post.PostId;
                 postToUse.postWriteUp = post.postWriteUp;
+                postToUse.PosterName = post.WhoPosted;
+                postToUse.PostersPhotopath = post.PosterPhotopath;
                 rePosts.Add(postToUse);
             }
             var OurPost = _blogRepository.addLikes(rePosts);
@@ -150,6 +160,8 @@ namespace TestBlog.Controllers
                 postToUse.Discription = post.Discription;
                 postToUse.Headline = post.Headline;
                 postToUse.Photopath = post.Photopath;
+                postToUse.PosterName = post.WhoPosted;
+                postToUse.PostersPhotopath = post.PosterPhotopath;
                 postToUse.PostId = post.PostId;
                 postToUse.postWriteUp = post.postWriteUp;
                 rePosts.Add(postToUse);
@@ -175,13 +187,16 @@ namespace TestBlog.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult AddComment(string Comment, int id,string Commenter)
+        public IActionResult AddComment(string Comment, int id,string Commenter,string CommenterPhoto)
         {
             var comment = new Comment()
             {
                 PostId = id,
                 comments = Comment,
-                WhoCommented =Commenter
+                WhoCommented =Commenter,
+                CommenterSphotopath =CommenterPhoto,
+                DateAndtime = DateTime.Now
+                
             };
             _blogRepository.SaveComent(comment);
             return RedirectToAction("index");
@@ -192,7 +207,7 @@ namespace TestBlog.Controllers
             var Liked = _blogRepository.likedBefore(id, likedBy);
             if (Liked.Equals(false))
             {
-                var likeTosave = new Like { Postid = id, WhoLiked = likedBy };
+                var likeTosave = new Like { Postid = id, WhoLiked = likedBy};
                 _blogRepository.SaveLike(likeTosave);
                 return RedirectToAction("index");
             }
@@ -212,6 +227,8 @@ namespace TestBlog.Controllers
                 postToUse.Discription = post.Discription;
                 postToUse.Headline = post.Headline;
                 postToUse.Photopath = post.Photopath;
+                postToUse.PosterName = post.WhoPosted;
+                postToUse.PostersPhotopath = post.PosterPhotopath;
                 postToUse.PostId = post.PostId;
                 postToUse.postWriteUp = post.postWriteUp;
                 rePosts.Add(postToUse);

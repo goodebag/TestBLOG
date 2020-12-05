@@ -19,5 +19,7 @@ namespace TestBlog.ViewModels
         public string Headline { get; set; }
         [Required]
         public IFormFile Photo { get; set; }
+        public string Photopath { get; set; }
+        public string whoIsPosting { get; set; }
     }
 }

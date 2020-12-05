@@ -10,6 +10,8 @@ namespace TestBlog.ViewModels
     {
 
         public int PostId { get; set; }
+        public string PosterName { get; set; }
+        public string PostersPhotopath { get; set; }
         public string Photopath { get; set; }
         public string postWriteUp { get; set; }
         public Category Discription { get; set; }

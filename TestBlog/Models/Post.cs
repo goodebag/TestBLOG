@@ -14,5 +14,6 @@ namespace TestBlog.Models
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> likes{ get; set; }
         public string WhoPosted { get; set; }
+        public string PosterPhotopath { get; internal set; }
     }
 }

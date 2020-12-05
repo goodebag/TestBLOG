@@ -1,0 +1,41 @@
+﻿@model TestBlog.ViewModels.postDishOut
+<div class="col-sm-4">
+    <!-- xxx Widet Box xxx -->
+    <div class="widgets-box">
+        <div class="sidebar-head"><span>Current prices</span></div>
+        <div class="sidebar-text overflow-auto">
+
+
+            <body class="light-blue darken-1">
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>Total Volume</th>
+                        <th>Market Cap</th>
+                    </tr>
+                    @{var coount = 1;
+                        string space = " ";
+                        }
+                    @foreach (var coin in Model.Cryptos)
+                    {
+                <tr>
+                    <td>@coount  @coin.market_cap_rank</td>
+                    <td>@coin.symbol  @coin.id</td>
+                    <td>@coin.current_price</td>
+                    <td>@coin.total_volume</td>
+                    <td>@coin.market_cap</td>
+                    @coount+=1;
+
+                </tr>
+                    }
+
+                </table>
+
+
+              </body>
+
+
+        </div>
+    </div>

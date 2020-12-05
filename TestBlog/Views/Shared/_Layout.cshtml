@@ -3,6 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, AuthoringTagHelpers
 
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -34,7 +35,24 @@
     <link href="~/css/theme/default.css" rel="stylesheet" />
 
     <script src="~/js/modernizr-2.6.2.min.js"></script>
-   
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width:auto;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
 </head>
 <body class="wide">
     <!--[if lt IE 7]>
@@ -139,16 +157,16 @@
                             <li><a>LOGOUT<a class="dropdown" asp-action="LogOutAdmin" asp-controller="Admin">@myUser.Fullname</a> </a></li>
 
                             </li>
-                        }
-                        @if (signINmanager.IsSignedIn(User))
-                        {
-                            var myUser = await usermanager.GetUserAsync(User);
-                            if (myUser.GetUserType.Equals(1))
+
+                            if (myUser.GetUserType.Equals(UserType.Admin))
                             {
                                 <li><a asp-action="Create" asp-controller="Home">Post News</a></li>
                             }
 
+
                         }
+
+
 
                         else
                         {
@@ -283,148 +301,135 @@
                 <!-- xxx Sidebar xxx -->
                 <div class="col-sm-4">
                     <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>About Me</span></div>
-                        <div class="sidebar-text">
-                            <div class="author-image">
-                                <img src="images/faces_1.jpg" alt="" class="img-circle">
-                            </div>
-                            <div class="author-intro">
-                                Proin at ante sed quam malesuada rutrum non ut orci. Aenean ullamcorper placerat erat, et porttitor velit aliquam vitae.
-                            </div>
-                            <div class="social-icons text-center">
-                                <ul>
-                                    <li><a href="#" data-toggle="tooltip" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#" data-toggle="tooltip" title="" data-original-title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-                                    <li><a href="#" data-toggle="tooltip" title="" data-original-title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
+                        @RenderSection("CripytoPrices", required: false)
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box">
+                            <div class="sidebar-head"><span>Newsletter Signup</span></div>
+                            <div class="sidebar-text">
+                                <p>Sign up to receive latest updates with Ruaha Blog!</p>
+                                <div class="newsletter-input">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Email Here">
+                                </div>
+                                <div class="newsletter-btn">
+                                    <button type="submit" class="btn-default">Send <i class="fa fa-check-circle"></i></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>Newsletter Signup</span></div>
-                        <div class="sidebar-text">
-                            <p>Sign up to receive latest updates with Ruaha Blog!</p>
-                            <div class="newsletter-input">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Email Here">
-                            </div>
-                            <div class="newsletter-btn">
-                                <button type="submit" class="btn-default">Send <i class="fa fa-check-circle"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <!-- xxx Recent post Section xxx -->
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <!-- xxx Recent post Section xxx -->
 
-                    @RenderSection("RecentPost",required: false)
-                    <!-- xxx Recent post Section closes xxx -->
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <!-- xxx Category start xxx -->
-                    @RenderSection("Categories", required: false)
-                    <!-- xxx Category End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>From Flickr</span></div>
-                        <div class="sidebar-text">
-                            <ul id="basicuse" class="photo-thumbs"></ul>
-                            <div class="clearfix"></div>
+                        @RenderSection("RecentPost", required: false)
+                        <!-- xxx Recent post Section closes xxx -->
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <!-- xxx Category start xxx -->
+                        @RenderSection("Categories", required: false)
+                        <!-- xxx Category End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box">
+                            <div class="sidebar-head"><span>From Flickr</span></div>
+                            <div class="sidebar-text">
+                                <ul id="basicuse" class="photo-thumbs"></ul>
+                                <div class="clearfix"></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box text-center">
-                        <div class="sidebar-head"><span>Banner Ads</span></div>
-                        <div class="sidebar-text">
-                            <img src="images/theme_forest_300x250.jpg" alt="">
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box text-center">
+                            <div class="sidebar-head"><span>Banner Ads</span></div>
+                            <div class="sidebar-text">
+                                <img src="images/theme_forest_300x250.jpg" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>Slider Posts</span></div>
-                        <div class="sidebar-text">
-                            <div class="owl-carousel" id="single-slider">
-                                <div class="item">
-                                    <a href="#"><img alt="" src="images/slider/slider-6.jpg"></a>
-                                    <div class="recent-post-text">
-                                        <h4><a href="#">Beauty With Perfect Combination</a></h4>
-                                        <div class="post-date">
-                                            <i class="fa fa-clock-o"></i> 21 Sep, 2015
-                                        </div>
-                                        <div class="post-date">
-                                            <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box">
+                            <div class="sidebar-head"><span>Slider Posts</span></div>
+                            <div class="sidebar-text">
+                                <div class="owl-carousel" id="single-slider">
+                                    <div class="item">
+                                        <a href="#"><img alt="" src="images/slider/slider-6.jpg"></a>
+                                        <div class="recent-post-text">
+                                            <h4><a href="#">Beauty With Perfect Combination</a></h4>
+                                            <div class="post-date">
+                                                <i class="fa fa-clock-o"></i> 21 Sep, 2015
+                                            </div>
+                                            <div class="post-date">
+                                                <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item">
-                                    <a href="#"><img alt="" src="images/slider/slider-7.jpg"></a>
-                                    <div class="recent-post-text">
-                                        <h4><a href="#">Future Desk For Web Architects</a></h4>
-                                        <div class="post-date">
-                                            <i class="fa fa-clock-o"></i> 21 Sep, 2015
-                                        </div>
-                                        <div class="post-date">
-                                            <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                                    <div class="item">
+                                        <a href="#"><img alt="" src="images/slider/slider-7.jpg"></a>
+                                        <div class="recent-post-text">
+                                            <h4><a href="#">Future Desk For Web Architects</a></h4>
+                                            <div class="post-date">
+                                                <i class="fa fa-clock-o"></i> 21 Sep, 2015
+                                            </div>
+                                            <div class="post-date">
+                                                <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item">
-                                    <a href="#"><img alt="" src="images/slider/slider-8.jpg"></a>
-                                    <div class="recent-post-text">
-                                        <h4><a href="#">I know what it means</a></h4>
-                                        <div class="post-date">
-                                            <i class="fa fa-clock-o"></i> 21 Sep, 2015
-                                        </div>
-                                        <div class="post-date">
-                                            <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                                    <div class="item">
+                                        <a href="#"><img alt="" src="images/slider/slider-8.jpg"></a>
+                                        <div class="recent-post-text">
+                                            <h4><a href="#">I know what it means</a></h4>
+                                            <div class="post-date">
+                                                <i class="fa fa-clock-o"></i> 21 Sep, 2015
+                                            </div>
+                                            <div class="post-date">
+                                                <a href="#"><i class="fa fa-comments-o"></i>15</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>Popular Tags</span></div>
-                        <div class="sidebar-text">
-                            <div class="tags">
-                                <a href="#">Music</a>
-                                <a href="#">New</a>
-                                <a href="#">Outstanding</a>
-                                <a href="#">Quote</a>
-                                <a href="#">Web</a>
-                                <a href="#">Sports</a>
-                                <a href="#">Travel</a>
-                                <a href="#">Shortcode</a>
-                                <a href="#">WordPress</a>
-                                <a href="#">Entertainment</a>
-                                <a href="#">Lifestyle</a>
-                                <a href="#">Movies</a>
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box">
+                            <div class="sidebar-head"><span>Popular Tags</span></div>
+                            <div class="sidebar-text">
+                                <div class="tags">
+                                    <a href="#">Music</a>
+                                    <a href="#">New</a>
+                                    <a href="#">Outstanding</a>
+                                    <a href="#">Quote</a>
+                                    <a href="#">Web</a>
+                                    <a href="#">Sports</a>
+                                    <a href="#">Travel</a>
+                                    <a href="#">Shortcode</a>
+                                    <a href="#">WordPress</a>
+                                    <a href="#">Entertainment</a>
+                                    <a href="#">Lifestyle</a>
+                                    <a href="#">Movies</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- xxx Widet Box End xxx -->
-                    <!-- xxx Widet Box xxx -->
-                    <div class="widgets-box">
-                        <div class="sidebar-head"><span>Text Widgets</span></div>
-                        <div class="sidebar-text">
-                            Vestibulum ullamcorper risus purus, at porttitor diam rhoncus id. Suspendisse tortor risus, consequat et urna varius, faucibus molestie lacus. Sed eu ligula porttitor,
-                            hendrerit mi vitae.
-                        </div>
+                        <!-- xxx Widet Box End xxx -->
+                        <!-- xxx Widet Box xxx -->
+                        <div class="widgets-box">
+                            <div class="sidebar-head"><span>Text Widgets</span></div>
+                            <div class="sidebar-text">
+                                Vestibulum ullamcorper risus purus, at porttitor diam rhoncus id. Suspendisse tortor risus, consequat et urna varius, faucibus molestie lacus. Sed eu ligula porttitor,
+                                hendrerit mi vitae.
+                            </div>
 
+                        </div>
+                        <!-- xxx Widet Box End xxx -->
                     </div>
-                    <!-- xxx Widet Box End xxx -->
-                </div>
                 <!-- xxx Sidebar End xxx -->
             </div>
         </div>
     </section>
+
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: false)
+    }
     <!-- xxx Body Content xxx -->
     <!-- xxx Back To Top xxx -->
     <div id="back-top">
