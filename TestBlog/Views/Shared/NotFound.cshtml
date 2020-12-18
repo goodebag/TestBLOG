@@ -1,12 +1,12 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 <form class="card" Mt="20" mb="50">
     <p><h1 class="text-center">Not Found</h1></p>
     <div class="newsletter-input text-center">
         <h1>@ViewBag.ErrorMessage</h1>
     </div>
-    <div class="blog-bottom text-center">
+    <div class="blog-bottom text-center text-danger">
         <a asp-action="index" asp-controller="home">Click here to go back to Home-page</a>
     </div>
 </form>

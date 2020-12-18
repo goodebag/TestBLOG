@@ -26,5 +26,7 @@ namespace TestBlog.Data
        RePost AddComent(RePost post);
         bool likedBefore(int postid,string userNAME);
         PostTypeCount TypeCount();
+        string AddEmail(EmailNotification Email);
+        IEnumerable<EmailNotification> GetEmails();
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestBlog.Data;
 using TestBlog.Models;
+using TestBlog.Models.CoinMarketCap;
 using TestBlog.ViewModels;
 
 namespace TestBlog.Controllers
@@ -29,42 +30,56 @@ namespace TestBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserSignUP()
+        public async Task<IActionResult> UserSignUP()
         {
 
             ViewBag.FormTitle = "User SignUp Page";
+            var Post = GetAllpost();
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.Allpost = (IEnumerable<RePost>)Post;
+            ViewBag.CatigoryTypeCount = typcount;
+            // loading coins to layout
+            var Crypto = await returnCoinToLayout();
+            ViewBag.Crypto = Crypto;
             return View("~/Views/Admin/AdminSignUP.cshtml");
+        }
+        public async Task<IEnumerable<CryptoMarketResponse>> returnCoinToLayout()
+        {
+            CoinProcessor processorR = new CoinProcessor();
+            var coinAndPrices = await processorR.LoadCoins();
+            var Crypto = (IEnumerable<CryptoMarketResponse>)coinAndPrices;
+            return Crypto;
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserSignUP(postDishOut model)
+        public async Task<IActionResult> UserSignUP(AdminViewModel model)
         {
 
             
                 string uniqueFileName = null;
-                if (model.AdminViewModel.Photo != null)
+                if (model.Photo != null)
                 {
 
                     string upload = hostingEnvironment.ContentRootPath;
                     var uploadsFolder = Path.Combine(upload, "wwwroot/images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.AdminViewModel.Photo.FileName;
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    model.AdminViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
                 // Copy data from RegisterViewModel to IdentityUser
                 var user = new myIdentityUser
                 {
                     Photophath = uniqueFileName,
-                    Fullname = (model.AdminViewModel.LastName + " " + model.AdminViewModel.FirstName),
-                    UserName = model.AdminViewModel.UserName,
-                    Email = model.AdminViewModel.Email,
+                    Fullname = (model.LastName + " " + model.FirstName),
+                    UserName = model.UserName,
+                    Email = model.Email.Trim(),
                     GetUserType = UserType.User,
-                    customid = model.AdminViewModel.LastName + "-" + model.AdminViewModel.FirstName + "_"
+                    customid = model.LastName + "-" + model.FirstName + "_"
                 }; 
 
                 // Store user data in AspNetUsers database table
-                var result = await _userManager.CreateAsync(user, model.AdminViewModel.Password);
+                var result = await _userManager.CreateAsync(user, model.Password.Trim());
 
                 //  If user is successfully created, sign-in the user using
                 // SignInManager and redirect to index action of HomeController
@@ -87,23 +102,25 @@ namespace TestBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserLogIn()
+        public async Task<IActionResult> UserLogIn()
         {
-            var Post = GetAllpost();
-            postDishOut Model = new postDishOut();
-            Model.Allpost = Post;
-            Model.Manypost = Post;
-            var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
+
             ViewBag.FormTitle = "User Login Page";
-            return View("~/Views/Admin/AdminLogIn.cshtml",Model);
+            var Post = GetAllpost();
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.Allpost = (IEnumerable<RePost>)Post;
+            ViewBag.CatigoryTypeCount = typcount;
+            // loading coins to layout
+            var Crypto = await returnCoinToLayout();
+            ViewBag.Crypto = Crypto;
+            return View("~/Views/Admin/AdminLogIn.cshtml");
         }
         [HttpPost]
-        public async Task<IActionResult> UserLogIn(postDishOut model)
+        public async Task<IActionResult> UserLogIn(LogInViewModel model)
         {
 
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.LogInViewModel.Email, model.LogInViewModel.Password, model.LogInViewModel.RemenberMe, false);
+                    model.Email.Trim(), model.Password.Trim(), model.RemenberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -113,7 +130,7 @@ namespace TestBlog.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             
 
-            return View(model);
+            return View("~/Views/Admin/AdminLogIn.cshtml", model);
         }
 
         public async Task<IActionResult> LogOutAdmin()

@@ -214,5 +214,18 @@ namespace TestBlog.Data
             postTypes.MusicnewsCount = MusicNews.Count;
             return postTypes;
         }
+
+        public string AddEmail(EmailNotification email)
+        {
+            context.EmailAddresses.Add(email);
+            context.SaveChanges();
+            var message = "Thanks for Signing-up for Email Notification";
+            return message;
+        }
+
+        public IEnumerable<EmailNotification> GetEmails()
+        {
+            return context.EmailAddresses;
+        }
     }
 }

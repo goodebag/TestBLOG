@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestBlog.Data;
 using TestBlog.Models;
+using TestBlog.Models.CoinMarketCap;
 using TestBlog.ViewModels;
 
 namespace TestBlog.Controllers
@@ -33,11 +34,26 @@ namespace TestBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult AdminSignUP()
+        public async Task<IActionResult> AdminSignUP()
         {
             ViewBag.FormTitle = "Admin SignUp Page";
+            var Post = GetAllpost();
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.Allpost = (IEnumerable<RePost>)Post;
+            ViewBag.CatigoryTypeCount = typcount;
+            // loading coins to layout
+            var Crypto = await returnCoinToLayout();
+            ViewBag.Crypto = Crypto;
             return View();
         
+        }
+  
+        public async Task<IEnumerable<CryptoMarketResponse>> returnCoinToLayout()
+        {
+            CoinProcessor processorR = new CoinProcessor();
+            var coinAndPrices = await processorR.LoadCoins();
+            var Crypto = (IEnumerable<CryptoMarketResponse>)coinAndPrices;
+            return Crypto;
         }
 
         [HttpPost]
@@ -92,29 +108,44 @@ namespace TestBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult AdminLogIn()
+        public async Task<IActionResult> AdminLogIn()
         {
             ViewBag.FormTitle = "Admin Login Page";
-          
+            var Post = GetAllpost();
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.Allpost = (IEnumerable<RePost>)Post;
+            ViewBag.CatigoryTypeCount = typcount;
+            // loading coins to layout
+            var Crypto = await returnCoinToLayout();
+            ViewBag.Crypto = Crypto;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> AdminLogIn(LogInViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    model.Email.Trim(), model.Password.Trim(), model.RemenberMe, false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("index", "home");
+                    var result = await _signInManager.PasswordSignInAsync(
+                        model.Email.Trim(), model.Password.Trim(), model.RemenberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                return View(model);
             }
+            catch (Exception e)
+            {
 
-            return View(model);
+                return null;
+            }
+        
         }
 
         public async Task<IActionResult> LogOutAdmin()

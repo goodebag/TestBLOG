@@ -7,7 +7,7 @@ namespace TestBlog.Models
 {
     public enum Category
     {
-        Entertainment,
+        Entertainment =1,
         SportsNews,
         Lifestyle,
         JobsAlert,

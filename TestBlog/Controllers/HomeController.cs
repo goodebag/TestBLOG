@@ -31,22 +31,41 @@ namespace TestBlog.Controllers
         public async Task<ViewResult> Index()
         {
             var Post = GetAllpost();
+            if (Post == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.ErrorMessage = "Sorry we couldn't reach the server at this point";
+                return View("NotFound");
+            }
             postDishOut Model = new postDishOut();
-            Model.Allpost = Post;
             Model.Manypost = Post;
             var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
-            CoinProcessor processor = new CoinProcessor();
-            var coinAndPrices = await processor.LoadCoins();
-            Model.Cryptos = (IEnumerable<CryptoMarketResponse>)coinAndPrices;
+              ViewBag.Allpost = (IEnumerable<RePost>)Post;
+             ViewBag.CatigoryTypeCount = typcount;
+            // loading coins to layout   
+            var Crypto = await returnCoinToLayout();
+            if (Crypto == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.ErrorMessage = "No network access (Please make your Internet is on)";
+                return View("NotFound");
+            }
+
+            ViewBag.Crypto = Crypto;
             return View(Model);
         }
 
         // GET: HomeController
         [HttpGet("/Home/Details/")]
-        public IActionResult Details(int Id)
+        public async Task<IActionResult> Details(int Id)
         {
             var post = _blogRepository.GetPost(Id);
+            if (post== null)
+            {
+                Response.StatusCode = 404; 
+                ViewBag.ErrorMessage = "Sorry the news you looking for doesn't exist";
+                return View("NotFound");
+            }
             var postToUse = new RePost();
             postToUse.Date = post.Date;
             postToUse.Discription = post.Discription;
@@ -61,16 +80,24 @@ namespace TestBlog.Controllers
             postDishOut Model = new postDishOut();
             Model.post = Post;
             var all = GetAllpost();
-            Model.Allpost = all;
+            ViewBag.Allpost = (IEnumerable<RePost>)all;
             var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
+           ViewBag.CatigoryTypeCount = (PostTypeCount)typcount;
+            var Crypto = await returnCoinToLayout();
+            ViewBag.Crypto = Crypto;
             return View(Model);
         }
 
         // GET: HomeController/Create
         [Authorize]
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
+            var all = GetAllpost();
+            ViewBag.Allpost = (IEnumerable<RePost>)all;
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.CatigoryTypeCount = (PostTypeCount)typcount;
+            //var Crypto = await returnCoinToLayout();
+            //ViewBag.Crypto = Crypto;
             postViewModel PostVM = new postViewModel();
             return View("~/Views/Admin/CreatePost.cshtml", PostVM);
         }
@@ -111,9 +138,15 @@ namespace TestBlog.Controllers
         }
 
         [HttpGet("/home/GetPostByDiscription/{description}")]
-        public IActionResult GetPostByDiscription(int description)
+        public async Task<IActionResult> GetPostByDiscription(int description)
         {
             var posts = _blogRepository.GetByDiscription((Category)description);
+            if (posts == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.ErrorMessage = "Sorry there's no news yet on the searched category";
+                return View("NotFound");
+            }
             List<RePost> rePosts = new List<RePost>();
             foreach (var post in posts)
             {
@@ -133,9 +166,11 @@ namespace TestBlog.Controllers
             postDishOut Model = new postDishOut();
             Model.Manypost = Post;
             var all = GetAllpost();
+            ViewBag.Allpost = (IEnumerable<RePost>)all;
             var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
-            Model.Allpost = all;
+            ViewBag.CatigoryTypeCount = (PostTypeCount)typcount;
+            //var Crypto = await returnCoinToLayout();
+            //ViewBag.Crypto = Crypto;
             return View("Index", Model);
         }
 
@@ -147,11 +182,17 @@ namespace TestBlog.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult GetPostByHeadline(string HeadLine)
+        public async Task<IActionResult> GetPostByHeadline(string HeadLine)
         {
 
             var TrimedHeadline = HeadLine.Trim();
             IEnumerable<Post> posts = _blogRepository.GetPostByHeadline(TrimedHeadline);
+            if (posts == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.ErrorMessage = "Sorry no news that matched searched terms";
+                return View("NotFound");
+            }
             List<RePost> rePosts = new List<RePost>();
             foreach (var post in posts)
             {
@@ -170,19 +211,32 @@ namespace TestBlog.Controllers
             var Post = _blogRepository.AddComents(OurPost);
             postDishOut Model = new postDishOut();
             Model.Manypost = Post;
-            var typcount = _blogRepository.TypeCount();
-            Model.CatigoryTypeCount = typcount;
             var all = GetAllpost();
-            Model.Allpost = all;
+            ViewBag.Allpost = (IEnumerable<RePost>)all;
+            var typcount = _blogRepository.TypeCount();
+            ViewBag.CatigoryTypeCount = (PostTypeCount)typcount;
+            //var Crypto = await returnCoinToLayout();
+            //ViewBag.Crypto = Crypto;
             return View("Index", Model);
 
         }
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Route("/Home/Error/{statusCode}")]
+        public IActionResult Error(int statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            switch (statusCode)
+            {
+                case 404:
+                    ViewBag.ErrorMessage = "Sorry The Route does not Exit";
+                    break;
+                case 500:
+                    ViewBag.ErrorMessage = "Sorry server could not reached";
+                    break;
+
+            }
+           
+            return View("NotFound");
         }
 
         [HttpPost]
@@ -196,7 +250,6 @@ namespace TestBlog.Controllers
                 WhoCommented =Commenter,
                 CommenterSphotopath =CommenterPhoto,
                 DateAndtime = DateTime.Now
-                
             };
             _blogRepository.SaveComent(comment);
             return RedirectToAction("index");
@@ -220,6 +273,7 @@ namespace TestBlog.Controllers
         {
             List<RePost> rePosts = new List<RePost>();
             var NewsUpdate = _blogRepository.GetALLpost();
+       
             foreach (var post in NewsUpdate)
             {
                 var postToUse = new RePost();
@@ -236,6 +290,22 @@ namespace TestBlog.Controllers
             var OurPost = _blogRepository.addLikes(rePosts);
             var Post = _blogRepository.AddComents(OurPost);
             return Post;
+        }
+        public async Task<IEnumerable<CryptoMarketResponse>> returnCoinToLayout()
+        {
+            CoinProcessor processorR = new CoinProcessor();
+            var coinAndPrices = await processorR.LoadCoins();
+          var Crypto = (IEnumerable<CryptoMarketResponse>)coinAndPrices;
+            return Crypto;
+        }
+        public PartialViewResult signUpForEmailNotification()
+        {
+            return PartialView();
+        }
+        [HttpGet("/Home/signUpForEmailNotification/")]
+        public  void signUpForEmailNotification(EmailNotification model)
+        {
+            ViewBag.ThanksStatment = _blogRepository.AddEmail(model);
         }
     }
 }

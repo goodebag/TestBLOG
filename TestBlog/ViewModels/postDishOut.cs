@@ -13,9 +13,6 @@ namespace TestBlog.ViewModels
         public IEnumerable<RePost> Manypost { get; set; }
         public RePost post { get; set; }
         public AdminViewModel AdminViewModel { get; set; }
-        public LogInViewModel LogInViewModel { get; set; }
-        public postViewModel postViewModel  { get; set; }
-        public PostTypeCount CatigoryTypeCount { get; set; }
-        public IEnumerable<CryptoMarketResponse> Cryptos { get; set; }
+
     }
 }
