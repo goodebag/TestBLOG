@@ -134,7 +134,13 @@ namespace TestBlog.Controllers
                     {
                         return RedirectToAction("index", "home");
                     }
-
+                    var Post = GetAllpost();
+                    var typcount = _blogRepository.TypeCount();
+                    ViewBag.Allpost = (IEnumerable<RePost>)Post;
+                    ViewBag.CatigoryTypeCount = typcount;
+                    // loading coins to layout
+                    var Crypto = await returnCoinToLayout();
+                    ViewBag.Crypto = Crypto;
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
 

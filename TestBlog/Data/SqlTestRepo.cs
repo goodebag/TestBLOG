@@ -175,7 +175,7 @@ namespace TestBlog.Data
             }
             else
             {
-                if (use.FirstOrDefault(e => e.WhoLiked == userNAME).Equals(null))
+                if (use.FirstOrDefault(e => e.WhoLiked == userNAME)==null)
                 {
                     liked = false;
                 }
