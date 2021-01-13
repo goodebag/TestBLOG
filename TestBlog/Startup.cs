@@ -42,7 +42,7 @@ namespace TestBlog
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseHttpsRedirection();

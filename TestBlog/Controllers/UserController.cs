@@ -86,7 +86,14 @@ namespace TestBlog.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                var Post = GetAllpost();
+                var typcount = _blogRepository.TypeCount();
+                ViewBag.Allpost = (IEnumerable<RePost>)Post;
+                ViewBag.CatigoryTypeCount = typcount;
+                // loading coins to layout
+                var Crypto = await returnCoinToLayout();
+                ViewBag.Crypto = Crypto;
+                return RedirectToAction("index", "home");
                 }
 
                 // If there are any errors, add them to the ModelState object

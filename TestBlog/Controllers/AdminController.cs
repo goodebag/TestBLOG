@@ -92,11 +92,19 @@ namespace TestBlog.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    var Post = GetAllpost();
+                    var typcount = _blogRepository.TypeCount();
+                    ViewBag.Allpost = (IEnumerable<RePost>)Post;
+                    ViewBag.CatigoryTypeCount = typcount;
+                    // loading coins to layout
+                    var Crypto = await returnCoinToLayout();
+                    ViewBag.Crypto = Crypto;
                     return RedirectToAction("index", "home");
                 }
 
                 // If there are any errors, add them to the ModelState object
                 // which will be displayed by the validation summary tag helper
+                else
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -134,6 +142,7 @@ namespace TestBlog.Controllers
                     {
                         return RedirectToAction("index", "home");
                     }
+                    else { 
                     var Post = GetAllpost();
                     var typcount = _blogRepository.TypeCount();
                     ViewBag.Allpost = (IEnumerable<RePost>)Post;
@@ -142,6 +151,7 @@ namespace TestBlog.Controllers
                     var Crypto = await returnCoinToLayout();
                     ViewBag.Crypto = Crypto;
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                    }
                 }
 
                 return View(model);

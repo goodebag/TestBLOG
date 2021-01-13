@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\TestBlog"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\TestBlog\\TestBlog.csproj",
   "PreviewInSolutionExplorer": false
 }
