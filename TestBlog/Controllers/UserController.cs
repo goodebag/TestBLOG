@@ -96,14 +96,15 @@ namespace TestBlog.Controllers
                 return RedirectToAction("index", "home");
                 }
 
-                // If there are any errors, add them to the ModelState object
-                // which will be displayed by the validation summary tag helper
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError(string.Empty, error.Description);
-                //}
+            // If there are any errors, add them to the ModelState object
+            // which will be displayed by the validation summary tag helper
+            else { 
+                     foreach (var error in result.Errors)
+                         {
+                             ModelState.AddModelError(string.Empty, error.Description);
+                          }
+            }
 
-            
 
             return View(model);
         }
@@ -133,9 +134,9 @@ namespace TestBlog.Controllers
                 {
                     return RedirectToAction("index", "home");
                 }
-
+            else {      
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-            
+                 }
 
             return View("~/Views/Admin/AdminLogIn.cshtml", model);
         }
